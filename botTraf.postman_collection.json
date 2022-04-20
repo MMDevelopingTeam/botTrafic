@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "e6d4bd7f-ceb5-4200-9f5e-1abc6e6d33b3",
+		"name": "botTraf",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Lanzar bot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name_model\" : \"camilagomez_ch\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/bot",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"bot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save proxys",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "myfile",
+							"type": "file",
+							"src": "/F:/dataNEcesaria/proxy.txt"
+						},
+						{
+							"key": "headquarter_id",
+							"value": "62602931817f483d48b11a5b",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{botTraf}}/storage/proxys",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"storage",
+						"proxys"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save accts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "myfile",
+							"type": "file",
+							"src": "/F:/dataNEcesaria/accounts.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{botTraf}}/api/storage/accts",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"api",
+						"storage",
+						"accts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save models",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name_model\" : \"camilagomez_ch\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/storage/model",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"storage",
+						"model"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save headquarter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"sedeUno\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/storage/headquarter",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"storage",
+						"headquarter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kill bots",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/bot/killbot",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"bot",
+						"killbot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get accts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{botTraf}}/storage/getaccts",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"storage",
+						"getaccts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
