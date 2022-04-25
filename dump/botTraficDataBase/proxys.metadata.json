@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"proxy":{"$numberInt":"1"}},"name":"proxy_1","background":true,"unique":true}],"uuid":"fdfc361e4e314d14b82d35f9861723f8","collectionName":"proxys","type":"collection"}
