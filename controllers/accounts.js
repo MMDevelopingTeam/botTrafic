@@ -1,6 +1,10 @@
 const proxyModels = require('../models/proxys');
+const headquarterModels = require('../models/headquarter');
+const accountsModels = require('../models/accounts');
+const {launchBotCreate} = require('../utils/createAccouts');
 
-const createAccounts = async (req, res) => {
+
+const createAccount = async (req, res) => {
     const { username, password } = req.body;
 
     const newAcct = new accountsModels({
@@ -16,8 +20,32 @@ const createAccounts = async (req, res) => {
         message: 'Cuenta guardada correctamente'
     });
 };
+const createAccounts = async (req, res) => {
+    const { headquarter_id } = req.body;
 
-const createProxys = async (req, res) => {
+    const dataheadquarter = await headquarterModels.findOne({_id: headquarter_id})
+    if (!dataheadquarter) {
+        return res.status(400).send({
+            success: false,
+            message: 'Sede no encontrada'
+        });
+    }
+    try {
+        launchBotCreate(headquarter_id)
+        return res.status(200).send({
+            success: true,
+            message: 'Cuentas guardadas correctamente'
+        });
+    } catch (error) {
+        return res.status(400).send({
+            success: false,
+            message: error.message
+        });
+        
+    }
+};
+
+const createProxy = async (req, res) => {
     const { proxy } = req.body;
 
     const newProxy = new proxyModels({
@@ -45,4 +73,4 @@ const getAccounts = async (req, res) => {
     });
 }
 
-module.exports = {createAccounts, getAccounts, createProxys};
+module.exports = {createAccount, createAccounts, getAccounts, createProxy};

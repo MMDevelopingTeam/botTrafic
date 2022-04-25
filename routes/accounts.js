@@ -1,9 +1,10 @@
 const express = require("express");
-const { createAccounts, getAccounts, createProxys } = require("../controllers/accounts");
+const { createAccount, getAccounts, createProxy, createAccounts } = require("../controllers/accounts");
 const router = express.Router();
 
-router.post("/", createAccounts)
-router.post("/proxy", createProxys)
+router.post("/", createAccount)
+router.post("/accoutsbot", createAccounts)
+router.post("/proxy", createProxy)
 router.get("/:id", getAccounts)
 
 module.exports = router

@@ -2,10 +2,12 @@ const { launchBot, launchBotDos } = require("../utils/launchBot");
 const killBots = require('../models/killBots');
 const accountsModels = require('../models/accounts');
 const streamerModels = require('../models/streamer');
-const headquarterModels = require('../models/headquarter');
+const logLaunchModels = require('../models/logLaunch');
 const monitorModels = require('../models/monitor');
 const proxysModels = require('../models/proxys');
 const fs = require("fs");
+
+var currentDate = new Date();
 
 const getBot = async (req, res) => {
   const {name_model, name_monitor} = req.body
@@ -24,6 +26,17 @@ const getBot = async (req, res) => {
       message: 'Monitor no encontrado en DB'
   });
   }
+
+  const newLog = new logLaunchModels({
+    date: currentDate,
+    name_model,
+    monitor: dataMonitor._id,
+    headquarter: dataMonitor.headquarter_id,
+    numberBots: 10
+  })
+  await newLog.save();
+  console.log("log registrado");
+
   for (let indexAcc = 1; indexAcc < 11; indexAcc++) {
     const dataAcct = await accountsModels.findOne({isUsed: false})
     if (!dataAcct) {
@@ -91,6 +104,15 @@ const killBot = async (req, res) => {
       );
       try {
         process.kill(dataKills[index].NmrKill);
+        const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
+        if (!dataProxy) {
+          break;
+        }
+        if (dataProxy.Nusers < 10) {
+          dataProxy.isFull=false
+        }
+        dataProxy.Nusers--
+        await dataProxy.save();
       } catch (error) {
         console.log(error.message);
       }
@@ -107,5 +129,9 @@ const killBot = async (req, res) => {
   // const {browserPID} = req.body;
   // process.kill(browserPID);
 };
+
+const logLaunch = async (req, res) => {
+  
+}
 
 module.exports = {getBot, killBot};

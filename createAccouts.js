@@ -37,7 +37,7 @@ const launchBotAcc = async () => {
         const deserializedCookies = JSON.parse(cookies);
         await page.setCookie(...deserializedCookies);
 
-        for (let index = 10; index < 20; index++) {
+        for (let index = 0; index < 20; index++) {
             try {
                 await page.goto('https://chaturbate.com/accounts/register/');
                 await page.waitForTimeout(`${Math.floor((Math.random() * (10-1))+1)}000`);
