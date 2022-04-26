@@ -2,6 +2,7 @@ const proxyModels = require('../models/proxys');
 const headquarterModels = require('../models/headquarter');
 const accountsModels = require('../models/accounts');
 const {launchBotCreate} = require('../utils/createAccouts');
+const { generatorNames } = require('../utils/generatorNames');
 
 
 const createAccount = async (req, res) => {
@@ -20,6 +21,7 @@ const createAccount = async (req, res) => {
         message: 'Cuenta guardada correctamente'
     });
 };
+
 const createAccounts = async (req, res) => {
     const { headquarter_id } = req.body;
 
@@ -31,6 +33,7 @@ const createAccounts = async (req, res) => {
         });
     }
     try {
+        await generatorNames()
         launchBotCreate(headquarter_id)
         return res.status(200).send({
             success: true,
@@ -44,6 +47,7 @@ const createAccounts = async (req, res) => {
         
     }
 };
+
 
 const createProxy = async (req, res) => {
     const { proxy } = req.body;
@@ -73,4 +77,30 @@ const getAccounts = async (req, res) => {
     });
 }
 
-module.exports = {createAccount, createAccounts, getAccounts, createProxy};
+const isFullFalse = async (req, res) => {
+    const dataAccts = await accountsModels.find()
+    if (!dataAccts) {
+        return res.status(400).send({
+            success: false,
+            message: 'Cuentas no encontradas'
+        });
+    }
+    try {
+        for (let index = 0; index < dataAccts.length; index++) {
+            const dataAcct = await accountsModels.findOne({_id : dataAccts[index]._id});
+            dataAcct.isUsed=false;
+            await dataAcct.save();
+        }
+        return res.status(200).send({
+            success: true,
+            message: "Estado cambiado"
+        });  
+    } catch (error) {
+        return res.status(400).send({
+            success: false,
+            message: error.message
+        });  
+    }
+}
+
+module.exports = {createAccount, createAccounts, getAccounts, createProxy, isFullFalse};

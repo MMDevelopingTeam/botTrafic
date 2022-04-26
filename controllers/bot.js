@@ -67,43 +67,22 @@ const getBot = async (req, res) => {
 };
 
 const killBot = async (req, res) => {
-
-  function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-     if ((new Date().getTime() - start) > milliseconds) {
-      break;
-     }
-    }
-   }
-   
-   function demo() {
-     console.log('Taking a break...');
-     sleep(5000);
-   }
    
    const dataKills = await killBots.find();
    
    if (dataKills) {
      for (let index = 0; index < dataKills.length; index++) {
-      demo();
       
       const dataAcct = await accountsModels.findOne({_id: dataKills[index].acct_id});
       if (!dataAcct) {
         break;
       }
-      accountsModels.updateOne(
-        { _id: dataKills[index].acct_id},
-        { $set: {"isUsed": false}},
-        (err, doc) => {
-          if (err) return console.log("error actualizando cuenta");
-          if (doc !== null) {
-            console.log("estado de cuenta cambiado")
-          }
-        }
-      );
+      dataAcct.isUsed=false;
+      await dataAcct.save();
       try {
-        process.kill(dataKills[index].NmrKill);
+        setTimeout(() => {
+          process.kill(dataKills[index].NmrKill);
+        }, 10000*(index+1));
         const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
         if (!dataProxy) {
           break;
@@ -116,22 +95,13 @@ const killBot = async (req, res) => {
       } catch (error) {
         console.log(error.message);
       }
-      const deleteKill = await killBots.deleteOne({_id: dataKills[index]._id});
-      console.log(deleteKill);
+      await killBots.deleteOne({_id: dataKills[index]._id});
     }
     return res.status(200).send({
         success: true,
         message: 'bot killer'
       });
   }
-
-
-  // const {browserPID} = req.body;
-  // process.kill(browserPID);
 };
-
-const logLaunch = async (req, res) => {
-  
-}
 
 module.exports = {getBot, killBot};

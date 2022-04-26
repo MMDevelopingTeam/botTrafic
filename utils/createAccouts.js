@@ -38,7 +38,7 @@ const launchBotCreate = async (headquarter_id) => {
     const deserializedCookies = JSON.parse(cookies);
     await page.setCookie(...deserializedCookies);
 
-    const nameFile="nameArray.json"
+    const nameFile="storage/nameArray.txt"
     const data = fs.readFileSync(nameFile, 'utf-8');
     const dataPar=JSON.parse(data)
 
@@ -68,7 +68,6 @@ const launchBotCreate = async (headquarter_id) => {
             await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
 
             let gen = [
-                "f",
                 "m",
                 "c",
                 "s"
@@ -124,6 +123,7 @@ const launchBotCreate = async (headquarter_id) => {
         }
 
     }
+    fs.unlinkSync(`${nameFile}`)
 
     // Check the result
 

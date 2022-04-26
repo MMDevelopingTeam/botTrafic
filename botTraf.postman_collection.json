@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name_model\" : \"camilagomez_ch\"\r\n}",
+					"raw": "{\r\n    \"name_model\" : \"karoline_miller7\",\r\n    \"name_monitor\" : \"monitor1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -46,7 +46,7 @@
 						},
 						{
 							"key": "headquarter_id",
-							"value": "62602931817f483d48b11a5b",
+							"value": "62621fb4c7707bb48bd30903",
 							"type": "text"
 						}
 					]
@@ -76,16 +76,20 @@
 							"key": "myfile",
 							"type": "file",
 							"src": "/F:/dataNEcesaria/accounts.txt"
+						},
+						{
+							"key": "headquarter_id",
+							"value": "62621fb4c7707bb48bd30903",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{botTraf}}/api/storage/accts",
+					"raw": "{{botTraf}}/storage/accts",
 					"host": [
 						"{{botTraf}}"
 					],
 					"path": [
-						"api",
 						"storage",
 						"accts"
 					]
@@ -100,7 +104,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name_model\" : \"camilagomez_ch\"\r\n}",
+					"raw": "{\r\n    \"name_model\" : \"camila_fiore\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -148,6 +152,90 @@
 			"response": []
 		},
 		{
+			"name": "save monitor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"monitor1\",\r\n    \"name\": \"mon1\",\r\n    \"password\": \"12345678\",\r\n    \"headquarter_id\": \"62621fb4c7707bb48bd30903\",\r\n    \"address\": \"calle1\",\r\n    \"number\": \"1234567890\",\r\n    \"Shift\": \"noche\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/storage/monitor",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"storage",
+						"monitor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crear cuentas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"headquarter_id\": \"62602931817f483d48b11a5b\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/accounts/accoutsbot",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"accounts",
+						"accoutsbot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "generar nombres",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"headquarter_id\": \"62602931817f483d48b11a5b\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/accounts/generateName",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"accounts",
+						"generateName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "kill bots",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -172,6 +260,36 @@
 					"path": [
 						"bot",
 						"killbot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cambiar estado cuentas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"headquarter_id\": \"62602931817f483d48b11a5b\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{botTraf}}/accounts/isFullFalse",
+					"host": [
+						"{{botTraf}}"
+					],
+					"path": [
+						"accounts",
+						"isFullFalse"
 					]
 				}
 			},
