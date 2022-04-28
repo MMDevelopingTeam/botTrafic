@@ -67,41 +67,62 @@ const getBot = async (req, res) => {
 };
 
 const killBot = async (req, res) => {
-   
-   const dataKills = await killBots.find();
-   
-   if (dataKills) {
-     for (let index = 0; index < dataKills.length; index++) {
-      
-      const dataAcct = await accountsModels.findOne({_id: dataKills[index].acct_id});
-      if (!dataAcct) {
-        break;
+  
+  function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 1; i < 1e7; i++) { 
+      if ((new Date().getTime() - start) > milliseconds) {
+       break;
       }
-      dataAcct.isUsed=false;
-      await dataAcct.save();
-      try {
-        setTimeout(() => {
-          process.kill(dataKills[index].NmrKill);
-        }, 10000*(index+1));
-        const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
-        if (!dataProxy) {
-          break;
-        }
-        if (dataProxy.Nusers < 10) {
-          dataProxy.isFull=false
-        }
-        dataProxy.Nusers--
-        await dataProxy.save();
-      } catch (error) {
-        console.log(error.message);
-      }
-      await killBots.deleteOne({_id: dataKills[index]._id});
     }
-    return res.status(200).send({
-        success: true,
-        message: 'bot killer'
-      });
+   }
+   
+   function demo() {
+     sleep(10000);
+   }
+   
+   
+
+  const dataKills = await killBots.find();
+  if (dataKills.length === 0) {
+   return res.status(400).send({
+     success: false,
+     message: 'kills no encontrados'
+   });
   }
+  
+  for (let index = 0; index < dataKills.length; index++) {
+    const dataAcct = await accountsModels.findOne({_id: dataKills[index].acct_id});
+    if (!dataAcct) {
+      console.log("cuenta no encotrada");
+      break;
+    }
+    dataAcct.isUsed=false;
+    await dataAcct.save();
+    const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
+    if (!dataProxy) {
+      break;
+    }
+    if (dataProxy.Nusers < 10) {
+      dataProxy.isFull=false
+    }
+    dataProxy.Nusers--
+    await dataProxy.save();
+    await killBots.deleteOne({_id: dataKills[index]._id});
+    try {
+      demo();
+      process.kill(dataKills[index].NmrKill);
+      console.log("kill bot");
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  console.clear()
+  console.log("killbots eliminados")
+  return res.status(200).send({
+      success: true,
+      message: 'bot killer'
+  });
 };
 
 module.exports = {getBot, killBot};

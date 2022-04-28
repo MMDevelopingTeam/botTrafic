@@ -2,6 +2,7 @@ const fs = require("fs");
 const proxysModels = require('../models/proxys');
 const accountsModels = require('../models/accounts');
 const headquarterModels = require('../models/headquarter');
+const killBotsModels = require('../models/killBots');
 const monitorModels = require('../models/monitor');
 const streamerModels = require('../models/streamer');
 const { parseId } = require("../utils/parserId");
@@ -223,5 +224,18 @@ const getAccts = async (req, res) => {
     });
   }
 }
+const createKillbots = async (req, res) => {
+  const {id_acct} = req.body;
+  const newNot = new killBotsModels({
+    NmrKill: 12345,
+    acct_id: id_acct,
+    proxy: "154.37.254.17:8800"
+  })
+  await newNot.save()
+  return res.status(200).send({
+    success: true,
+    message: 'killbot creado'
+  });
+}
 
-module.exports = {createProxys, createAcct, createModels, createHeadquarter, getModels, getProxys, getAccts, createMonitor};
+module.exports = {createProxys, createAcct, createModels, createHeadquarter, getModels, getProxys, getAccts, createMonitor, createKillbots};
