@@ -6,7 +6,7 @@ const launchBotCreate = async (headquarter_id) => {
     // prepare for headless chrome
     const browser = await puppeteer.launch({
         args: [
-            "--proxy-server=154.37.254.17:8800",
+            "--proxy-server=104.144.239.24:8800",
             // "--start-maximized",
             "--disable-web-security",
             "--disable-extensions",
@@ -69,10 +69,9 @@ const launchBotCreate = async (headquarter_id) => {
 
             let gen = [
                 "m",
-                "c",
-                "s"
+                "c"
             ]
-            await page.select('#id_gender', `${gen[Math.floor((Math.random() * (3-1))+1)]}`)
+            await page.select('#id_gender', `${gen[Math.floor((Math.random() * (2-0))+0)]}`)
             await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
 
             await page.click('#id_terms');

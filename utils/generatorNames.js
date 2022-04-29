@@ -29,10 +29,14 @@ const generatorNames = async () => {
             fs.unlinkSync(`${nameFile}`)
         }
         for (let index = 0; index < 20; index++) {
-            await page.goto('https://generadordenombres.online/');
+            await page.goto('https://generadordenombres.online/empresas/#');
             const name = await page.evaluate(() => document.querySelector('.resultadoGenerado').innerText);
-            const nameCmp=name.replace(' ', `${Math.floor((Math.random() * (250-130))+130)}`)
-            dataName.push({nameCmp, password: '12345678CuentaUsrCh'})
+            const nameCmp=name.replace(/ S.L./g, `${Math.floor((Math.random() * (100-1))+1)}`)
+            const nameCmp2=nameCmp.replace(/ S.A./g, `${Math.floor((Math.random() * (100-1))+1)}`)
+            const usernameF=nameCmp2.replace(/-/g, '')
+            const username=usernameF.toLowerCase()
+
+            dataName.push({username, password: '12345678CuentaUsrCh'})
         }
         console.log(dataName);
         fs.writeFileSync(nameFile, JSON.stringify(dataName))
