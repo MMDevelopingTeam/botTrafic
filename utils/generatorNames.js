@@ -34,7 +34,8 @@ const generatorNames = async () => {
             const nameCmp=name.replace(/ S.L./g, `${Math.floor((Math.random() * (100-1))+1)}`)
             const nameCmp2=nameCmp.replace(/ S.A./g, `${Math.floor((Math.random() * (100-1))+1)}`)
             const usernameF=nameCmp2.replace(/-/g, '')
-            const username=usernameF.toLowerCase()
+            const usernamea=usernameF.replace(/ñ/g, 'n')
+            const username=usernamea.toLowerCase()
 
             dataName.push({username, password: '12345678CuentaUsrCh'})
         }

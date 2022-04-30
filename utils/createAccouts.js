@@ -44,16 +44,16 @@ const launchBotCreate = async (headquarter_id) => {
 
     for (let index = 0; index < dataPar.length; index++) {
         try {
-            const name = dataPar[index].nameCmp;
+            const username = dataPar[index].username;
             const password = dataPar[index].password;
-            const dataAcct = await accountsModels.findOne({username: name})
+            const dataAcct = await accountsModels.findOne({username})
             if (dataAcct) {
                 return console.log("cuenta existente");
             }
             await page.goto('https://chaturbate.com/accounts/register/');
             await page.waitForTimeout(`${Math.floor((Math.random() * (10-1))+1)}000`);
 
-            await page.type('#husername', name);
+            await page.type('#husername', username);
             await page.waitForTimeout(`${Math.floor((Math.random() * (10-1))+1)}000`);
             await page.type('#hpassword', password);
             await page.waitForTimeout(`${Math.floor((Math.random() * (10-1))+1)}000`);
@@ -81,36 +81,36 @@ const launchBotCreate = async (headquarter_id) => {
             await page .click('#formsubmit');
             await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
             await page.goto('https://chaturbate.com/auth/logout/');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Enter');
             await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
 
             const newAcct = new accountsModels({
-                username: name,
+                username,
                 password,
                 headquarter_id
             })

@@ -60,6 +60,9 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
         await page.click('.button');
         await page.waitForTimeout(5000);
         console.log("login terminado");
+        console.log("=====================");
+        console.log("username:", username);
+        console.log("=====================");
         
         const newIdKBot = new killBots({
             NmrKill: browserPID,
