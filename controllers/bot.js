@@ -71,6 +71,7 @@ const killBot = async (req, res) => {
   function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 1; i < 1e7; i++) { 
+      console.log(new Date().getTime() - start);
       if ((new Date().getTime() - start) > milliseconds) {
        break;
       }
@@ -82,7 +83,7 @@ const killBot = async (req, res) => {
    }
    
    
-
+  console.clear()
   const dataKills = await killBots.find();
   if (dataKills.length === 0) {
    return res.status(400).send({

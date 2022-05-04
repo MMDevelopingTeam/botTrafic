@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { getBot, killBot } = require("../controllers/bot");
-const { generatorNames } = require("../utils/generatorNames");
+const { validateBot } = require("../validators/bot");
 
-router.post("/", getBot)
+router.post("/", validateBot, getBot)
 router.get("/killBot", killBot)
 
 module.exports = router

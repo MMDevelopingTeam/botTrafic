@@ -80,25 +80,8 @@ const launchBotCreate = async (headquarter_id) => {
             await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
             await page .click('#formsubmit');
             await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
-            await page.goto('https://chaturbate.com/auth/logout/');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
-            await page.keyboard.press('Tab');
+            // await page.goto('https://chaturbate.com/auth/logout/');
+            await page.goto('https://chaturbate.com');
             await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Tab');
             await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
@@ -107,7 +90,30 @@ const launchBotCreate = async (headquarter_id) => {
             await page.keyboard.press('Tab');
             await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
             await page.keyboard.press('Enter');
-            await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            await page.click('.user_information_header_icon')
+            // await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (3-1))+1)}000`);
+            // await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            
+            await page.keyboard.press('Enter');
+            // await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            // await page.keyboard.press('Tab');
+            await page.click('.accept')
+            await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            // await page.keyboard.press('Tab');
+            // await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            // await page.keyboard.press('Tab');
+            // await page.waitForTimeout(`${Math.floor((Math.random() * (4-1))+1)}000`);
+            // await page.keyboard.press('Enter');
+            // await page.waitForTimeout(`${Math.floor((Math.random() * (7-1))+1)}000`);
 
             const newAcct = new accountsModels({
                 username,
