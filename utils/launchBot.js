@@ -31,7 +31,7 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
     });
     const browserPID = browser.process().pid
 
-    console.log("browserPID:", browserPID);
+    // console.log("browserPID:", browserPID);
 
     const page = (await browser.pages())[0];
     await page.setDefaultNavigationTimeout(0);
@@ -51,18 +51,15 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
 
     try {
         await page.goto('https://chaturbate.com/auth/login/');
-        console.log("bot lanzado dentro de la pagina");
-        await page.waitForTimeout(`${Math.floor((Math.random() * (10-5))+5)}000`);
+        console.log(`bot con PID : ${browserPID} lanzado dentro de la pagina`);
+        await page.waitForTimeout(`${Math.floor((Math.random() * (10-6))+6)}000`);
         await page.type('#id_username', username);
-        await page.waitForTimeout(`${Math.floor((Math.random() * (5-1))+1)}000`);
+        await page.waitForTimeout(`${Math.floor((Math.random() * (5-3))+3)}000`);
         await page.type('#id_password', password);
-        await page.waitForTimeout(`${Math.floor((Math.random() * (10-5))+5)}000`);
+        await page.waitForTimeout(`${Math.floor((Math.random() * (10-7))+7)}000`);
         await page.click('.button');
         await page.waitForTimeout(5000);
         console.log("login terminado");
-        console.log("=====================");
-        console.log("username:", username);
-        console.log("=====================");
         
         const newIdKBot = new killBots({
             NmrKill: browserPID,
@@ -71,7 +68,7 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
         })
     
         await newIdKBot.save();
-
+        
         try {
             const texto = await page.evaluate(() => document.querySelector("pre").innerText);
             console.log(texto);
@@ -99,9 +96,22 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
             await page.keyboard.press('Tab');
             await page.waitForTimeout(`${Math.floor((Math.random() * (10-5))+5)}000`);
             await page.keyboard.press('Enter');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
+            
+            try {
+                const name = await page.evaluate(() => document.querySelector('.user_information_header_username').innerText);
+                if (name) {
+                    console.log("=====================");
+                    console.log("username:", name);
+                    console.log("login exitoso");
+                    console.log("=====================");
+                }
+            } catch (error) {
+                console.log("cuenta no logueada");
+                
+            }
+            
             await page.waitForTimeout(`${Math.floor((Math.random() * (5-1))+1)}000`);
-            console.log("dentro del home");
-            await page.waitForTimeout(`${Math.floor((Math.random() * (10-5))+5)}000`);
             await page.goto(`https://chaturbate.com/${nameModel}/`);
             await page.waitForTimeout(`${Math.floor((Math.random() * (5-1))+1)}000`);
             console.log("dentro del streaming");

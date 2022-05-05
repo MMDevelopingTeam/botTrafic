@@ -52,7 +52,7 @@ const getBot = async (req, res) => {
     if (dataProxy && dataProxy.isDown === false) {
       setTimeout(() => {
         launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
-      }, 15000*indexAcc);
+      }, 16000*indexAcc);
     } else{
       break;
     }
@@ -79,7 +79,7 @@ const killBot = async (req, res) => {
    }
    
    function demo() {
-     sleep(10000);
+     sleep(200);
    }
    
    
