@@ -67,7 +67,7 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
             proxy
         })
     
-        await newIdKBot.save();
+        const DataKillbot = await newIdKBot.save();
         
         try {
             const texto = await page.evaluate(() => document.querySelector("pre").innerText);
@@ -97,24 +97,27 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
             await page.waitForTimeout(`${Math.floor((Math.random() * (10-5))+5)}000`);
             await page.keyboard.press('Enter');
             await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
-            
+            await page.waitForTimeout(`${Math.floor((Math.random() * (5-1))+1)}000`);
+            await page.goto(`https://chaturbate.com/${nameModel}/`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (5-1))+1)}000`);
             try {
                 const name = await page.evaluate(() => document.querySelector('.user_information_header_username').innerText);
                 if (name) {
                     console.log("=====================");
                     console.log("username:", name);
                     console.log("login exitoso");
+                    console.log("dentro del streaming");
                     console.log("=====================");
                 }
             } catch (error) {
-                console.log("cuenta no logueada");
+                console.log("cuenta no logueada dentro del streaming");
+                process.kill(browserPID)
+                await killBots.deleteOne({_id: DataKillbot._id});
+                launchBotDos(proxy, username, password, id, nameModel)
+                console.log("launch botDos");
+
                 
             }
-            
-            await page.waitForTimeout(`${Math.floor((Math.random() * (5-1))+1)}000`);
-            await page.goto(`https://chaturbate.com/${nameModel}/`);
-            await page.waitForTimeout(`${Math.floor((Math.random() * (5-1))+1)}000`);
-            console.log("dentro del streaming");
         }
     
         
@@ -138,13 +141,15 @@ const launchBot = async (proxy, username, password, id, nameModel) => {
     // await browser.close();
 };
 
-const launchBotDos = async (proxy) => {
+const launchBotDos = async (proxy, username, password, id, nameModel) => {
 
+    // const launchBot = async (username, password, id, nameModel) => {
     // prepare for headless chrome
     process.setMaxListeners(Infinity);
+
     const browser = await puppeteer.launch({
         args: [
-            // "--proxy-server=154.12.210.68:8800",
+            // "--proxy-server=185.249.1.151:8800 ",
             `--proxy-server=${proxy}`,
             "--start-maximized",
             "--disable-web-security",
@@ -160,14 +165,14 @@ const launchBotDos = async (proxy) => {
             "--disable-blink-features=AutomationControlled",
             "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
         ],
-        headless: false
+        headless: true
     });
     const browserPID = browser.process().pid
 
-    console.log("browserPID:", browserPID);
+    // console.log("browserPID:", browserPID);
 
     const page = (await browser.pages())[0];
-    // await page.setDefaultNavigationTimeout(0);
+    await page.setDefaultNavigationTimeout(0);
     // await page.setViewport({
     //     width: 1920,
     //     height: 1080,
@@ -183,13 +188,86 @@ const launchBotDos = async (proxy) => {
     // Check the result
 
     try {
-        await page.goto('https://www.ionos.es/tools/direccion-ip');
-        // await page.goto('https://youtube.com');
-        console.log("bot lanzado dentro de la pagina");
-    } catch (error) {
-        if (error.message === 'net::ERR_TUNNEL_CONNECTION_FAILED at https://www.ionos.es/tools/direccion-ip') {
-            console.log(error.message)
+        await page.goto('https://chaturbate.com/auth/login/');
+        console.log(`bot con PID : ${browserPID} lanzado dentro de la pagina`);
+        await page.waitForTimeout(`${Math.floor((Math.random() * (20-15))+15)}000`);
+        await page.type('#id_username', username);
+        await page.waitForTimeout(`${Math.floor((Math.random() * (15-12))+12)}000`);
+        await page.type('#id_password', password);
+        await page.waitForTimeout(`${Math.floor((Math.random() * (15-12))+12)}000`);
+        await page.click('.button');
+        await page.waitForTimeout(15000);
+        console.log("login terminado");
+        
+        const newIdKBot = new killBots({
+            NmrKill: browserPID,
+            acct_id: id,
+            proxy
+        })
+    
+        await newIdKBot.save();
+        
+        try {
+            const texto = await page.evaluate(() => document.querySelector("pre").innerText);
+            console.log(texto);
+            if (texto === "Try slowing down") {
+                console.log("=======================");
+                console.log("Try slowing down");
+                console.log("=======================");
+                process.kill(browserPID);
+                console.log("chrome kill");
+                const dataProxy = await proxysModels.findOne({proxy})
+                if (!dataProxy) {
+                    return console.log("proxy no encontrado");
+                }
+                dataProxy.Nusers--
+                console.log("bot de respaldo lanzado");
+                launchBotCatch(nameModel, id, username, password)
+                await dataProxy.save();
+            }
+        } catch (error) {
+            console.log('Try slowing down no encontrado')
+            await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
+            await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
+            await page.keyboard.press('Tab');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
+            await page.keyboard.press('Enter');
+            await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
+            await page.goto(`https://chaturbate.com/${nameModel}/`);
+            await page.waitForTimeout(`${Math.floor((Math.random() * (15-11))+11)}000`);
+            try {
+                const name = await page.evaluate(() => document.querySelector('.user_information_header_username').innerText);
+                if (name) {
+                    console.log("=====================");
+                    console.log("username:", name);
+                    console.log("login exitoso");
+                    console.log("dentro del streaming");
+                    console.log("=====================");
+                }
+            } catch (error) {
+                console.log("cuenta no logueada dentro del streaming");
+                
+            }
         }
+    
+        
+    } catch (error) {
+        console.log(error.message);
+        const dataProxy = await proxysModels.findOne({proxy})
+        if (!dataProxy) {
+            return console.log("Error encontrando proxy");
+        }
+        if (dataProxy.isDown === true) {
+            process.kill(browserPID)
+            return console.log("Proxy caido");
+        }
+        dataProxy.isDown = true;
+        await dataProxy.save();
+        process.kill(browserPID)
+        console.log("Proxy caido");
     }
 }
 
