@@ -10,16 +10,16 @@ const fs = require("fs");
 var currentDate = new Date();
 
 const getBot = async (req, res) => {
-  const {name_model, name_monitor} = req.body
+  const {name_model} = req.body
 
-  const dataModel = await streamerModels.findOne({name_model})
-  if (!dataModel) {
-    return res.status(400).send({
-      success: true,
-      message: 'Modelo no encontrada en DB'
-  });
-  }
-  const dataMonitor = await monitorModels.findOne({username: name_monitor})
+  // const dataModel = await streamerModels.findOne({name_model})
+  // if (!dataModel) {
+  //   return res.status(400).send({
+  //     success: true,
+  //     message: 'Modelo no encontrada en DB'
+  // });
+  // }
+  const dataMonitor = await monitorModels.findOne()
   if (!dataMonitor) {
     return res.status(400).send({
       success: true,
@@ -27,14 +27,14 @@ const getBot = async (req, res) => {
   });
   }
 
-  const newLog = new logLaunchModels({
-    date: currentDate,
-    name_model,
-    monitor: dataMonitor._id,
-    headquarter: dataMonitor.headquarter_id,
-    numberBots: 10
-  })
-  await newLog.save();
+  // const newLog = new logLaunchModels({
+  //   date: currentDate,
+  //   name_model,
+  //   monitor: dataMonitor._id,
+  //   headquarter: dataMonitor.headquarter_id,
+  //   numberBots: 10
+  // })
+  // await newLog.save();
   console.log("log registrado");
 
   for (let indexAcc = 1; indexAcc < 11; indexAcc++) {
@@ -51,7 +51,8 @@ const getBot = async (req, res) => {
     await dataProxy.save();
     if (dataProxy && dataProxy.isDown === false) {
       setTimeout(() => {
-        launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
+        // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
+        launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, name_model)
       }, 16000*indexAcc);
     } else{
       break;
