@@ -1,4 +1,4 @@
-const { launchBot, launchBotDos, launchBotVDos } = require("../utils/launchBot");
+const { launchBot, launchBotDos, launchBotVDos, vDosBot } = require("../utils/launchBot");
 const killBots = require('../models/killBots');
 const accountsModels = require('../models/accounts');
 const streamerModels = require('../models/streamer');
@@ -54,7 +54,7 @@ const getBot = async (req, res) => {
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, name_model)
         launchBotVDos(dataProxy.proxy, dataAcct._id, name_model, dataAcct.username, dataAcct.password)
-      }, 16000*indexAcc);
+      }, 15000*indexAcc);
     } else{
       break;
     }
@@ -130,7 +130,7 @@ const killBot = async (req, res) => {
 
 const vDos = async (req, res) => {
   const {proxy, name_model, username, password} = req.body
-  launchBotVDos(proxy, name_model, username, password)
+  vDosBot(proxy, name_model, username, password)
 }
 
 module.exports = {getBot, killBot, vDos};
