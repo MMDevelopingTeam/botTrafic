@@ -1,6 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const proxysModels = require('../models/proxys');
+const acctModels = require('../models/accounts');
 const killBots = require('../models/killBots');
 
 
@@ -378,7 +379,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password) => {
         proxy
     })
     
-    await newIdKBot.save();
+    const dataKIll = await newIdKBot.save();
     
     const page = (await browser.pages())[0];
     await page.setDefaultNavigationTimeout(0);
@@ -392,8 +393,8 @@ const launchBotVDos = async (proxy, id, name_model, username, password) => {
     const deserializedCookies = JSON.parse(cookies);
     await page.setCookie(...deserializedCookies);
     await page.waitForTimeout(2000)
-    await page.goto('https://chaturbate.com/auth/login/');
     try {
+        await page.goto('https://chaturbate.com/auth/login/');
         await page.waitForTimeout(8000)
         await page.keyboard.type(username)
         await page.keyboard.press('Tab')
@@ -406,6 +407,21 @@ const launchBotVDos = async (proxy, id, name_model, username, password) => {
         await page.waitForTimeout(2000)
         await page.keyboard.press('Enter')
         await page.waitForTimeout(8000)
+        const localStorage = await page.evaluate(() => localStorage.getItem("onlineFollowedTab"));
+        if (localStorage === null) {
+            await page.screenshot({path: `storage/${username}.jpg`})
+            const dataUsr = await user.findOne({proxy})
+            dataUsr.isUsed=false
+            const dataProxy = await acctModels.findOne({_id: id})
+            if (!dataProxy) {
+                return console.log("proxy no encontrado");
+            }
+            dataProxy.Nusers--
+            await dataUsr.save();
+            await dataProxy.save();
+            await killBots.deleteOne({_id: dataKIll._id})
+            return await browser.close()
+        }
         await page.goto(`https://chaturbate.com/${name_model}`);
         await page.waitForTimeout(8000)
     } catch (error) {
@@ -444,7 +460,7 @@ const vDosBot = async (proxy, name_model, username, password) => {
             "--disable-blink-features=AutomationControlled",
             "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
         ],
-        headless: true
+        headless: false
     })
 
     const page = (await browser.pages())[0];
@@ -458,9 +474,11 @@ const vDosBot = async (proxy, name_model, username, password) => {
     const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
     const deserializedCookies = JSON.parse(cookies);
     await page.setCookie(...deserializedCookies);
+    await page.get
     await page.waitForTimeout(10000)
-    await page.goto('https://chaturbate.com/auth/login/');
     try {
+        await page.goto('https://chaturbate.com/auth/login/');
+        // await page.screenshot({path: `storage/${username}.jpg`})
         await page.waitForTimeout(8000)
         await page.keyboard.type(username)
         await page.keyboard.press('Tab')
@@ -473,11 +491,17 @@ const vDosBot = async (proxy, name_model, username, password) => {
         await page.waitForTimeout(2000)
         await page.keyboard.press('Enter')
         await page.waitForTimeout(8000)
+        const localStorage = await page.evaluate(() => localStorage.getItem("onlineFollowedTab"));
+        if (localStorage === null) {
+            console.log(localStorage)
+            await page.screenshot({path: `storage/${username}.jpg`})
+            await browser.close()
+        }
+        await page.waitForTimeout(2000)
         await page.goto(`https://chaturbate.com/${name_model}`);
         await page.waitForTimeout(8000)
-        // await page.screenshot({path: `storage/${username}.jpg`})
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
     }
 }
 
