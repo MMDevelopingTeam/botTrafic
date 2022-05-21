@@ -350,7 +350,7 @@ const launchBotCatch = async (nameModel, id, username, password) => {
     }
 }
 
-const launchBotVDos = async (proxy, id, name_model, username, password) => {
+const launchBotVDos = async (proxy, id, name_model, username, password, index) => {
     
     process.setMaxListeners(Infinity);
     const browser = await puppeteer.launch({
@@ -406,9 +406,15 @@ const launchBotVDos = async (proxy, id, name_model, username, password) => {
         await page.keyboard.press('Tab')
         await page.waitForTimeout(2000)
         await page.keyboard.press('Enter')
-        await page.waitForTimeout(8000)
+        await page.waitForTimeout(10000)
         const localStorage = await page.evaluate(() => localStorage.getItem("onlineFollowedTab"));
         if (localStorage === null) {
+            console.log("###########################################");
+            console.log("username:", username);
+            console.log("proxy:", proxy);
+            console.log("Bot:", index);
+            console.log("cuenta no logueada dentro del streaming");  
+            console.log("###########################################"); 
             await page.screenshot({path: `storage/${username}.jpg`})
             const dataUsr = await user.findOne({proxy})
             dataUsr.isUsed=false
@@ -420,25 +426,21 @@ const launchBotVDos = async (proxy, id, name_model, username, password) => {
             await dataUsr.save();
             await dataProxy.save();
             await killBots.deleteOne({_id: dataKIll._id})
-            return await browser.close()
-        }
-        await page.goto(`https://chaturbate.com/${name_model}`);
-        await page.waitForTimeout(8000)
-    } catch (error) {
-        console.log(error)
-    }
-    try {
-        const name = await page.evaluate(() => document.querySelector('.user_information_header_username').innerText);
-        if (name) {
+            await browser.close()
+            return;
+        }else{
             console.log("=====================");
-            console.log("username:", name);
+            console.log("username:", username);
+            console.log("proxy:", proxy);
+            console.log("Bot:", index);
             console.log("login exitoso");
             console.log("dentro del streaming");
             console.log("=====================");
         }
+        await page.waitForTimeout(1000)
+        await page.goto(`https://chaturbate.com/${name_model}`);
     } catch (error) {
-        console.log("cuenta no logueada dentro del streaming");  
-        await page.screenshot({path: `storage/${username}.jpg`})
+        console.log(error.message)
     }
 }
 

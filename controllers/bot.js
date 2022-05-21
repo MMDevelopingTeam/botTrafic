@@ -53,7 +53,7 @@ const getBot = async (req, res) => {
       setTimeout(() => {
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, name_model)
-        launchBotVDos(dataProxy.proxy, dataAcct._id, name_model, dataAcct.username, dataAcct.password)
+        launchBotVDos(dataProxy.proxy, dataAcct._id, name_model, dataAcct.username, dataAcct.password, indexAcc)
       }, 15000*indexAcc);
     } else{
       break;
