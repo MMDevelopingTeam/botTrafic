@@ -2,12 +2,12 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const accountsModels = require('../models/accounts');
 
-const launchBotCreate = async (headquarter_id) => {
+const launchBotCreate = async () => {
     // prepare for headless chrome
     const browser = await puppeteer.launch({
         args: [
-            "--proxy-server=104.144.239.24:8800",
-            // "--start-maximized",
+            "--proxy-server=154.38.18.131:8800",
+            "--start-maximized",
             "--disable-web-security",
             "--disable-extensions",
             "--disable-notifications",
@@ -117,8 +117,7 @@ const launchBotCreate = async (headquarter_id) => {
 
             const newAcct = new accountsModels({
                 username,
-                password,
-                headquarter_id
+                password
             })
             await newAcct.save();
             console.log("cuenta creada correctamente")
@@ -129,6 +128,8 @@ const launchBotCreate = async (headquarter_id) => {
 
     }
     fs.unlinkSync(`${nameFile}`)
+    await page.waitForTimeout(300000)
+    await browser.close();
 
     // Check the result
 

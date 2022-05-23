@@ -2,10 +2,9 @@ const { check } = require('express-validator')
 const { validateResult } = require('../utils/validateHelper')
 
 const validateBot = [
-    check('name_model', 'El campo es requerido')
-    .exists(),
-    // check('name_monitor', 'El campo es requerido')
-    // .exists(),
+    check('token', 'El campo es requerido')
+    .exists()
+    .notEmpty(),
     (req, res, next) => {
         validateResult(req, res, next)
     }

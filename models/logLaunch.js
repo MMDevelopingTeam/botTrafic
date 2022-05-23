@@ -4,8 +4,9 @@ const LogLaunchSchema = new mongoose.Schema(
     {
         date: { type: Date, default: Date.now, required: true },
         name_model: { type: String, required: true },
-        monitor: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'monitor' },
-        headquarter: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'headquarter' },
+        userId: { type: String },
+        headquarterId: { type: String },
+        companyId: { type: String },
         numberBots: { type: Number, required: true}
     }
 )

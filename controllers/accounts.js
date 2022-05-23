@@ -1,5 +1,4 @@
 const proxyModels = require('../models/proxys');
-const headquarterModels = require('../models/headquarter');
 const accountsModels = require('../models/accounts');
 const {launchBotCreate} = require('../utils/createAccouts');
 const { generatorNames } = require('../utils/generatorNames');
@@ -23,18 +22,19 @@ const createAccount = async (req, res) => {
 };
 
 const createAccounts = async (req, res) => {
-    const { headquarter_id } = req.body;
-
-    const dataheadquarter = await headquarterModels.findOne({_id: headquarter_id})
-    if (!dataheadquarter) {
+    const {nInt} = req.body;
+    if (!nInt) {
         return res.status(400).send({
             success: false,
-            message: 'Sede no encontrada'
+            message: 'el campo nInt es requerido'
         });
     }
     try {
-        await generatorNames()
-        launchBotCreate(headquarter_id)
+        for (let index = 0; index < nInt; index++) {
+            console.log("interacion:", index);
+            await generatorNames()
+            await launchBotCreate()
+        }
         return res.status(200).send({
             success: true,
             message: 'Cuentas guardadas correctamente'

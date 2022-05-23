@@ -1,40 +1,44 @@
 const { launchBot, launchBotDos, launchBotVDos, vDosBot } = require("../utils/launchBot");
 const killBots = require('../models/killBots');
 const accountsModels = require('../models/accounts');
-const streamerModels = require('../models/streamer');
 const logLaunchModels = require('../models/logLaunch');
-const monitorModels = require('../models/monitor');
 const proxysModels = require('../models/proxys');
-const fs = require("fs");
+const jwt = require('jsonwebtoken');
 
 var currentDate = new Date();
 
 const getBot = async (req, res) => {
-  const {name_model} = req.body
+  const {token} = req.body
+  let dataLaunch = null;
+  try {
 
-  // const dataModel = await streamerModels.findOne({name_model})
-  // if (!dataModel) {
-  //   return res.status(400).send({
-  //     success: true,
-  //     message: 'Modelo no encontrada en DB'
-  // });
-  // }
-  const dataMonitor = await monitorModels.findOne()
-  if (!dataMonitor) {
-    return res.status(400).send({
-      success: true,
-      message: 'Monitor no encontrado en DB'
-  });
+    jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
+        if (err) {
+            return res.status(403).send({
+                success: false,
+                message: "Error en el token"
+            });
+        }else{
+            // console.log(authData); 
+            dataLaunch=authData
+        }
+    })
+  } catch (error) {
+      return res.status(403).send({
+          success: false,
+          message: "JWT invalido"
+        });
   }
 
-  // const newLog = new logLaunchModels({
-  //   date: currentDate,
-  //   name_model,
-  //   monitor: dataMonitor._id,
-  //   headquarter: dataMonitor.headquarter_id,
-  //   numberBots: 10
-  // })
-  // await newLog.save();
+  const newLog = new logLaunchModels({
+    date: currentDate,
+    name_model: dataLaunch.nameModel,
+    userId: dataLaunch.userId,
+    headquarterId: dataLaunch.headquarter,
+    companyId: dataLaunch.company,
+    numberBots: 10
+  })
+  await newLog.save();
   console.log("log registrado");
 
   for (let indexAcc = 1; indexAcc < 11; indexAcc++) {
@@ -43,7 +47,7 @@ const getBot = async (req, res) => {
       console.log("No hay cuentas libres");
       break;
     }
-    const dataProxy = await proxysModels.findOne({headquarter_id: dataMonitor.headquarter_id, isFull: false})
+    const dataProxy = await proxysModels.findOne({isFull: false})
     dataProxy.Nusers++
     if (dataProxy.Nusers === 10) {
       dataProxy.isFull = true
@@ -53,7 +57,7 @@ const getBot = async (req, res) => {
       setTimeout(() => {
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, name_model)
-        launchBotVDos(dataProxy.proxy, dataAcct._id, name_model, dataAcct.username, dataAcct.password, indexAcc)
+        launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc)
       }, 15000*indexAcc);
     } else{
       break;

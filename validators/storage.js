@@ -1,14 +1,6 @@
 const { check } = require('express-validator')
 const { validateResult } = require('../utils/validateHelper')
 
-const validateStorageProxys = [
-    check('headquarter_id', 'El campo es requerido')
-    .exists(),
-    (req, res, next) => {
-        validateResult(req, res, next)
-    }
-]
-
 const validateStorageModel = [
     check('name_model', 'El campo es requerido')
     .exists(),
@@ -55,7 +47,6 @@ const validateStorageMonitor = [
 ]
 
 module.exports = {
-    validateStorageProxys,
     validateStorageModel, 
     validateStorageHeadquarter,
     validateStorageKillBot,
