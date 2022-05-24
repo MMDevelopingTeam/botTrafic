@@ -417,9 +417,9 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index) =
             console.log("cuenta no logueada dentro del streaming");  
             console.log("###########################################"); 
             await page.screenshot({path: `storage/${username}.jpg`})
-            const dataUsr = await user.findOne({proxy})
+            const dataUsr = await acctModels.findOne({username})
             dataUsr.isUsed=false
-            const dataProxy = await acctModels.findOne({_id: id})
+            const dataProxy = await proxysModels.findOne({_id: id})
             if (!dataProxy) {
                 return console.log("proxy no encontrado");
             }
