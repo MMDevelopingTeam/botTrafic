@@ -5,6 +5,6 @@ const { validateBot } = require("../validators/bot");
 
 router.post("/", validateBot, getBot)
 router.post("/VDos", vDos)
-router.get("/killBot", killBot)
+router.post("/killBot", validateBot, killBot)
 
 module.exports = router

@@ -375,6 +375,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index) =
     const browserPID = browser.process().pid
     const newIdKBot = new killBots({
         NmrKill: browserPID,
+        nameModel: name_model,
         acct_id: id,
         proxy
     })

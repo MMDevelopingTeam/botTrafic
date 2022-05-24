@@ -11,7 +11,6 @@ const getBot = async (req, res) => {
   const {token} = req.body
   let dataLaunch = null;
   try {
-
     jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
         if (err) {
             return res.status(403).send({
@@ -44,7 +43,10 @@ const getBot = async (req, res) => {
   for (let indexAcc = 1; indexAcc < 11; indexAcc++) {
     const dataAcct = await accountsModels.findOne({isUsed: false})
     if (!dataAcct) {
-      console.log("No hay cuentas libres");
+      res.status(200).send({
+        success: true,
+        message: 'No hay cuentas libres'
+      });
       break;
     }
     const dataProxy = await proxysModels.findOne({isFull: false})
@@ -74,6 +76,27 @@ const getBot = async (req, res) => {
 
 const killBot = async (req, res) => {
   
+  const {token} = req.body
+  let dataKillbot = null;
+  try {
+    jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
+        if (err) {
+            return res.status(403).send({
+                success: false,
+                message: "Error en el token"
+            });
+        }else{
+            // console.log(authData); 
+            dataKillbot=authData
+        }
+    })
+  } catch (error) {
+    return res.status(403).send({
+        success: false,
+        message: "JWT invalido"
+    });
+  }
+
   function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 1; i < 1e7; i++) { 
@@ -90,7 +113,7 @@ const killBot = async (req, res) => {
    
    
   console.clear()
-  const dataKills = await killBots.find();
+  const dataKills = await killBots.find({nameModel: dataKillbot.nameModel});
   if (dataKills.length === 0) {
    return res.status(400).send({
      success: false,
