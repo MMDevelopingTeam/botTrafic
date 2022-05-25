@@ -407,39 +407,42 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index) =
         await page.keyboard.press('Tab')
         await page.waitForTimeout(2000)
         await page.keyboard.press('Enter')
-        await page.waitForTimeout(10000)
-        const localStorage = await page.evaluate(() => localStorage.getItem("onlineFollowedTab"));
-        if (localStorage === null) {
+        await page.waitForTimeout(8000)
+        await page.goto(`https://chaturbate.com/tipping/free_tokens/`);
+        await page.waitForTimeout(2000)
+        if (await page.url() === 'https://chaturbate.com/auth/login/?next=/tipping/free_tokens/') {
             console.log("###########################################");
             console.log("username:", username);
             console.log("proxy:", proxy);
             console.log("Bot:", index);
-            console.log("cuenta no logueada dentro del streaming");  
+            console.log("cuenta no logueada");  
             console.log("###########################################"); 
-            await page.screenshot({path: `storage/${username}.jpg`})
-            const dataUsr = await acctModels.findOne({username})
+            // await page.screenshot({path: `storage/${username}.jpg`})
+            const dataUsr = await acctModels.findOne({_id: id})
             dataUsr.isUsed=false
-            const dataProxy = await proxysModels.findOne({_id: id})
+            const dataProxy = await proxysModels.findOne({proxy})
             if (!dataProxy) {
                 return console.log("proxy no encontrado");
             }
             dataProxy.Nusers--
+            if (dataProxy.Nusers <= 10) {
+                dataProxy.isFull=false
+            }
             await dataUsr.save();
             await dataProxy.save();
             await killBots.deleteOne({_id: dataKIll._id})
             await browser.close()
             return;
-        }else{
-            console.log("=====================");
-            console.log("username:", username);
-            console.log("proxy:", proxy);
-            console.log("Bot:", index);
-            console.log("login exitoso");
-            console.log("dentro del streaming");
-            console.log("=====================");
         }
         await page.waitForTimeout(1000)
         await page.goto(`https://chaturbate.com/${name_model}`);
+        console.log("=====================");
+        console.log("username:", username);
+        console.log("proxy:", proxy);
+        console.log("Bot:", index);
+        console.log("login exitoso");
+        console.log("dentro del streaming");
+        console.log("=====================");
     } catch (error) {
         console.log(error.message)
     }
@@ -494,13 +497,11 @@ const vDosBot = async (proxy, name_model, username, password) => {
         await page.waitForTimeout(2000)
         await page.keyboard.press('Enter')
         await page.waitForTimeout(8000)
-        const localStorage = await page.evaluate(() => localStorage.getItem("onlineFollowedTab"));
-        if (localStorage === null) {
-            console.log(localStorage)
-            await page.screenshot({path: `storage/${username}.jpg`})
-            await browser.close()
-        }
+        await page.goto(`https://chaturbate.com/tipping/free_tokens/`);
         await page.waitForTimeout(2000)
+        if (await page.url() === 'https://chaturbate.com/auth/login/?next=/tipping/free_tokens/') {
+          return console.log("object");  
+        }
         await page.goto(`https://chaturbate.com/${name_model}`);
         await page.waitForTimeout(8000)
     } catch (error) {
