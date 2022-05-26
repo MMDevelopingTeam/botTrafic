@@ -121,7 +121,7 @@ const killBot = async (req, res) => {
    });
   }
   
-  for (let index = 0; index < dataKills.length; index++) {
+  for (let index = 0; index < dataKillbot.nBots; index++) {
     const dataAcct = await accountsModels.findOne({_id: dataKills[index].acct_id});
     if (!dataAcct) {
       console.log("cuenta no encotrada");
