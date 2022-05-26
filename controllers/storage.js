@@ -109,6 +109,39 @@ const getAccts = async (req, res) => {
     });
   }
 }
+const getAcctsFree = async (req, res) => {
+  const acctsModels = await accountsModels.find({isUsed: false})
+  if (acctsModels) {
+    return res.status(200).send({
+      success: true,
+      message: 'Cuentas encotradas',
+      acctsModels: acctsModels.length
+    });
+  } else {
+    return res.status(400).send({
+      success: false,
+      message: 'Error encontrando cuentas'
+    });
+  }
+}
+
+const getKillBotsByModel = async (req, res) => {
+  const {nameModel} = req.body;
+  const acctsModels = await killBotsModels.find({nameModel})
+  if (acctsModels) {
+    return res.status(200).send({
+      success: true,
+      message: 'Killbots encotrados',
+      acctsModels: acctsModels.length
+    });
+  } else {
+    return res.status(400).send({
+      success: false,
+      message: 'Error encontrando Killbots'
+    });
+  }
+}
+
 const createKillbots = async (req, res) => {
   const {id_acct} = req.body;
   const newNot = new killBotsModels({
@@ -123,4 +156,4 @@ const createKillbots = async (req, res) => {
   });
 }
 
-module.exports = {createProxys, createAcct, getProxys, getAccts, createKillbots};
+module.exports = {createProxys, createAcct, getProxys, getAccts, createKillbots, getAcctsFree, getKillBotsByModel};

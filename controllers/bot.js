@@ -35,12 +35,12 @@ const getBot = async (req, res) => {
     userId: dataLaunch.userId,
     headquarterId: dataLaunch.headquarter,
     companyId: dataLaunch.company,
-    numberBots: 10
+    numberBots: dataLaunch.nBots
   })
   await newLog.save();
   console.log("log registrado");
 
-  for (let indexAcc = 1; indexAcc < 11; indexAcc++) {
+  for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
     const dataAcct = await accountsModels.findOne({isUsed: false})
     if (!dataAcct) {
       res.status(200).send({

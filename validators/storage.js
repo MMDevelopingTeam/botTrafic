@@ -46,9 +46,20 @@ const validateStorageMonitor = [
     }
 ]
 
+const getKillBotsValidator = [
+    check('nameModel', 'El campo es requerido')
+    .exists()
+    .notEmpty(),
+    (req, res, next) => {
+        validateResult(req, res, next)
+    }
+]
+
+
 module.exports = {
     validateStorageModel, 
     validateStorageHeadquarter,
     validateStorageKillBot,
-    validateStorageMonitor
+    validateStorageMonitor,
+    getKillBotsValidator
 }
