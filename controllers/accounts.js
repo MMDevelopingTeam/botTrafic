@@ -65,17 +65,6 @@ const createProxy = async (req, res) => {
     });
 };
 
-const getAccounts = async (req, res) => {
-    const { id } = req.params
-
-    const dataAcct = await accountsModels.findOne({isUsed: false});
-    console.log(dataAcct.username)
-    return res.status(200).send({
-        success: true,
-        message: 'Cuenta encontrada',
-        dataAcct
-    });
-}
 
 const isFullFalse = async (req, res) => {
     const dataAccts = await accountsModels.find()
@@ -103,4 +92,4 @@ const isFullFalse = async (req, res) => {
     }
 }
 
-module.exports = {createAccount, createAccounts, getAccounts, createProxy, isFullFalse};
+module.exports = {createAccount, createAccounts, createProxy, isFullFalse};

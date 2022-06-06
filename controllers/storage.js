@@ -19,12 +19,15 @@ const createProxys = async (req, res) => {
   console.log("------ no parar el proceso --------");
   try {
     for (let index = 0; index < proxys.length; index++) {
-      const newProxy = new proxysModels({
-        proxy: proxys[index]
-      })
-
-    const saveProxy = await newProxy.save();
-    console.log(saveProxy)
+      const dataP = await proxysModels.findOne({proxy: proxys[index]})
+      if (dataP) {
+        console.log('proxy ya existente');
+      }else{
+        const newProxy = new proxysModels({
+          proxy: proxys[index]
+        })
+        await newProxy.save();
+      }
     }
     fs.unlinkSync(`storage/${file.filename}`)
     console.log("archivo eliminado");
@@ -40,6 +43,36 @@ const createProxys = async (req, res) => {
   }
 
 };
+
+const createProxysString = async (req, res) => {
+  const { proxysStrings } = req.body
+
+  const proxys = proxysStrings.split(",")
+  try {
+    for (let index = 0; index < proxys.length; index++) {
+      const dataP = await proxysModels.findOne({proxy: proxys[index]})
+      if (dataP) {
+        console.log('proxy ya existente');
+      }else{
+        const newProxy = new proxysModels({
+          proxy: proxys[index]
+        })
+        await newProxy.save();
+      }
+    }
+    return res.status(200).send({
+        success: true,
+        message: 'data guardada en base de datos'
+    });
+  } catch (error) {
+    return res.status(400).send({
+        success: false,
+        message: error.message
+    });
+  }
+
+};
+
 const createAcct = async (req, res) => {
   const { file } = req
   if (!file) {
@@ -85,6 +118,7 @@ const getProxys = async (req, res) => {
     return res.status(200).send({
       success: true,
       message: 'proxys encontrados',
+      prsModelsLength: prsModels.length,
       prsModels
     });
   } else {
@@ -94,12 +128,31 @@ const getProxys = async (req, res) => {
     });
   }
 }
+
+const getProxysFree = async (req, res) => {
+  const prsModels = await proxysModels.find({isFull: false})
+  if (proxysModels) {
+    return res.status(200).send({
+      success: true,
+      message: 'proxys encontrados',
+      prsModelsLength: prsModels.length,
+      prsModels
+    });
+  } else {
+    return res.status(400).send({
+      success: false,
+      message: 'Error encontrando proxys'
+    });
+  }
+}
+
 const getAccts = async (req, res) => {
   const acctsModels = await accountsModels.find()
   if (acctsModels) {
     return res.status(200).send({
       success: true,
       message: 'Cuentas encotradas',
+      acctsModelslength: acctsModels.length,
       acctsModels
     });
   } else {
@@ -156,4 +209,4 @@ const createKillbots = async (req, res) => {
   });
 }
 
-module.exports = {createProxys, createAcct, getProxys, getAccts, createKillbots, getAcctsFree, getKillBotsByModel};
+module.exports = {createProxys, createProxysString, createAcct, getProxys, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModel};

@@ -54,6 +54,14 @@ const getKillBotsValidator = [
         validateResult(req, res, next)
     }
 ]
+const getCreateProxysString = [
+    check('proxysStrings', 'El campo es requerido')
+    .exists()
+    .notEmpty(),
+    (req, res, next) => {
+        validateResult(req, res, next)
+    }
+]
 
 
 module.exports = {
@@ -61,5 +69,6 @@ module.exports = {
     validateStorageHeadquarter,
     validateStorageKillBot,
     validateStorageMonitor,
+    getCreateProxysString,
     getKillBotsValidator
 }

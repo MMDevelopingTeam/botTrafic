@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getBot, killBot, vDos } = require("../controllers/bot");
+const { getBot, killBot, vDos, killByNickname } = require("../controllers/bot");
 const { validateBot } = require("../validators/bot");
 
 router.post("/", validateBot, getBot)
