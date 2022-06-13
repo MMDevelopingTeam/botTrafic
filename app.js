@@ -4,6 +4,20 @@ const cors = require("cors")
 require("dotenv").config();
 const bodyParser = require('body-parser');
 const app = express()
+const axios = require('axios');
+
+
+require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+    // console.log('addr: '+add);
+    let url = `http://${process.env.IPSRV}:3020/api/botContainer/updateByIp/${add}`;
+    axios.put(url, {isActive: true})
+    .then(function (response) {
+        console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+})
 
 app.use(cors())
 app.use(express.json())

@@ -43,8 +43,8 @@ const getBot = async (req, res) => {
   for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
     const dataAcct = await accountsModels.findOne({isUsed: false})
     if (!dataAcct) {
-      res.status(200).send({
-        success: true,
+      res.status(400).send({
+        success: false,
         message: 'No hay cuentas libres'
       });
       break;

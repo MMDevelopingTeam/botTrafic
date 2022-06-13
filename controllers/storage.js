@@ -153,7 +153,6 @@ const getAccts = async (req, res) => {
       success: true,
       message: 'Cuentas encotradas',
       acctsModelslength: acctsModels.length,
-      acctsModels
     });
   } else {
     return res.status(400).send({
@@ -185,7 +184,8 @@ const getKillBotsByModel = async (req, res) => {
     return res.status(200).send({
       success: true,
       message: 'Killbots encotrados',
-      acctsModels: acctsModels.length
+      acctsModelsLength: acctsModels.length,
+      acctsModels: acctsModels
     });
   } else {
     return res.status(400).send({
