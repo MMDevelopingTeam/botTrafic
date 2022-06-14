@@ -10,24 +10,17 @@ var currentDate = new Date();
 const getBot = async (req, res) => {
   const {token} = req.body
   let dataLaunch = null;
-  try {
-    jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
-        if (err) {
-            return res.status(403).send({
-                success: false,
-                message: "Error en el token"
-            });
-        }else{
-            // console.log(authData); 
-            dataLaunch=authData
-        }
-    })
-  } catch (error) {
-      return res.status(403).send({
-          success: false,
-          message: "JWT invalido"
-        });
-  }
+  jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
+      if (err) {
+          return res.status(403).send({
+              success: false,
+              message: "Error en el token"
+          });
+      }else{
+          // console.log(authData); 
+          dataLaunch=authData
+      }
+  })
 
   const newLog = new logLaunchModels({
     date: currentDate,
@@ -68,10 +61,11 @@ const getBot = async (req, res) => {
     await dataAcct.save();
   }
 
-  return res.status(200).send({
-      success: true,
-      message: 'bot corriendo'
-  });
+  return console.log('bots corriendo');
+  // return res.status(200).send({
+  //     success: true,
+  //     message: 'bot corriendo'
+  // });
 };
 
 const killBot = async (req, res) => {
