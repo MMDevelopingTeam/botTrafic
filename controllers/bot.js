@@ -61,11 +61,10 @@ const getBot = async (req, res) => {
     await dataAcct.save();
   }
 
-  return console.log('bots corriendo');
-  // return res.status(200).send({
-  //     success: true,
-  //     message: 'bot corriendo'
-  // });
+  return res.status(200).send({
+      success: true,
+      message: 'bot corriendo'
+  });
 };
 
 const killBot = async (req, res) => {
