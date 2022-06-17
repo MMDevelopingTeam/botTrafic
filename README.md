@@ -15,4 +15,10 @@ npm run dev
 crea el archivo .env en la raiz del proyecto, luego configura la siguientes lineas
 ```
 PORT=XXXX
+KEY_JWT=XXXXXXX
+IPSRV=XXX.XXX.XXX.XXX
 ```
+
+## Versions
+
+nodejs: 14.18.3
