@@ -153,4 +153,11 @@ const vDos = async (req, res) => {
   vDosBot(proxy, name_model, username, password)
 }
 
-module.exports = {getBot, killBot, vDos};
+const status = async (req, res) => {
+  return res.status(200).send({
+    success: true,
+    message: "Bot funcionando correctamente"
+});
+}
+
+module.exports = {getBot, killBot, vDos, status};
