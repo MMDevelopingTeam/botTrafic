@@ -1,4 +1,4 @@
-const { launchBot, launchBotDos, launchBotVDos, vDosBot } = require("../utils/launchBot");
+const { launchBotVDos, vDosBot } = require("../utils/launchBot");
 const killBots = require('../models/killBots');
 const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
@@ -148,9 +148,31 @@ const killBot = async (req, res) => {
   });
 };
 
-const vDos = async (req, res) => {
-  const {proxy, name_model, username, password} = req.body
-  vDosBot(proxy, name_model, username, password)
+const getBotAny = async (req, res) => {
+
+  const {name_model} = req.body;
+
+  for (let indexAcc = 1; indexAcc < 11; indexAcc++) {
+    const dataProxy = await proxysModels.findOne({isFull: false})
+    dataProxy.Nusers++
+    if (dataProxy.Nusers === 10) {
+      dataProxy.isFull = true
+    }
+    await dataProxy.save();
+    if (dataProxy && dataProxy.isDown === false) {
+      setTimeout(() => {
+        vDosBot(dataProxy.proxy, name_model)
+        // launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc)
+      }, 15000*indexAcc);
+    } else{
+      break;
+    }
+  }
+
+  return res.status(200).send({
+      success: true,
+      message: 'bot corriendo'
+  });
 }
 
 const status = async (req, res) => {
@@ -160,4 +182,4 @@ const status = async (req, res) => {
 });
 }
 
-module.exports = {getBot, killBot, vDos, status};
+module.exports = {getBot, killBot, getBotAny, status};

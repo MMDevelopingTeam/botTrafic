@@ -15,7 +15,7 @@ require('dns').lookup(require('os').hostname(), function (err, add, fam) {
         console.log(response.data);
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error.message);
     });
 })
 
