@@ -32,6 +32,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index) =
         NmrKill: browserPID,
         nameModel: name_model,
         acct_id: id,
+        type: 'actsLogued',
         proxy
     })
     
@@ -103,11 +104,12 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index) =
     }
 }
 
-const vDosBot = async (proxy, name_model) => {
+const vDosBot = async (name_model, proxy) => {
     process.setMaxListeners(Infinity);
     const browser = await puppeteer.launch({
         args: [
             `--proxy-server=${proxy}`,
+            // `--proxy-server=138.128.119.188:8800`,
             "--start-maximized",
             "--disable-web-security",
             "--disable-extensions",
@@ -122,17 +124,17 @@ const vDosBot = async (proxy, name_model) => {
             "--disable-blink-features=AutomationControlled",
             "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
         ],
-        headless: false
+        headless: true
     })
-    // const browserPID = browser.process().pid
-    // const newIdKBot = new killBots({
-    //     NmrKill: browserPID,
-    //     nameModel: name_model,
-    //     acct_id: id,
-    //     proxy
-    // })
+    const browserPID = browser.process().pid
+    const newIdKBot = new killBots({
+        NmrKill: browserPID,
+        nameModel: name_model,
+        type: 'actsAny',
+        proxy
+    })
     
-    // const dataKIll = await newIdKBot.save();
+    const dataKIll = await newIdKBot.save();
     
     const page = (await browser.pages())[0];
     await page.setDefaultNavigationTimeout(0);
@@ -148,6 +150,7 @@ const vDosBot = async (proxy, name_model) => {
     await page.waitForTimeout(2000)
     try {
         await page.goto(`https://chaturbate.com/${name_model}`);
+        await page.waitForTimeout(1000)
         console.log("=====================");
         console.log("dentro del streaming");
         console.log("=====================");

@@ -43,6 +43,13 @@ const getBot = async (req, res) => {
       break;
     }
     const dataProxy = await proxysModels.findOne({isFull: false})
+    if (!dataProxy) {
+      res.status(400).send({
+        success: false,
+        message: 'No hay proxys libres'
+      });
+      break;
+    }
     dataProxy.Nusers++
     if (dataProxy.Nusers === 10) {
       dataProxy.isFull = true
@@ -150,10 +157,40 @@ const killBot = async (req, res) => {
 
 const getBotAny = async (req, res) => {
 
-  const {name_model} = req.body;
+  const {token} = req.body
+  let dataLaunch = null;
+  jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
+      if (err) {
+          return res.status(403).send({
+              success: false,
+              message: "Error en el token"
+          });
+      }else{
+          // console.log(authData); 
+          dataLaunch=authData
+      }
+  })
 
-  for (let indexAcc = 1; indexAcc < 11; indexAcc++) {
+  const newLog = new logLaunchModels({
+    date: currentDate,
+    name_model: dataLaunch.nameModel,
+    userId: dataLaunch.userId,
+    headquarterId: dataLaunch.headquarter,
+    companyId: dataLaunch.company,
+    numberBots: dataLaunch.nBots
+  })
+  await newLog.save();
+  console.log("log registrado");
+
+  for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
     const dataProxy = await proxysModels.findOne({isFull: false})
+    if (!dataProxy) {
+      res.status(400).send({
+        success: false,
+        message: 'No hay proxys libres'
+      });
+      break;
+    }
     dataProxy.Nusers++
     if (dataProxy.Nusers === 10) {
       dataProxy.isFull = true
@@ -161,8 +198,7 @@ const getBotAny = async (req, res) => {
     await dataProxy.save();
     if (dataProxy && dataProxy.isDown === false) {
       setTimeout(() => {
-        vDosBot(dataProxy.proxy, name_model)
-        // launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc)
+        vDosBot(dataLaunch.nameModel, dataProxy.proxy)
       }, 15000*indexAcc);
     } else{
       break;

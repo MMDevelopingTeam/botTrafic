@@ -4,7 +4,7 @@ const { getBot, killBot, getBotAny, status } = require("../controllers/bot");
 const { validateBot } = require("../validators/bot");
 
 router.post("/", validateBot, getBot)
-router.post("/getBotAny", getBotAny)
+router.post("/getBotAny", validateBot, getBotAny)
 router.post("/killBot", validateBot, killBot)
 router.get("/", status)
 
