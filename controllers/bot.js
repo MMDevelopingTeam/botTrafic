@@ -430,52 +430,56 @@ const killBotMixed = async (req, res) => {
     });
    }
   
-  let i = dataKillbot.nBots*3
+  let i = (dataKillbot.nBots*3)+dataKillbot.nBots
 
   for (let index = 0; index < i; index++) {
-    if (dataKills[index].type === "actsLogued") {
-      const dataAcct = await accountsModels.findOne({_id: dataKills[index].acct_id});
-      if (!dataAcct) {
-        console.log("cuenta no encotrada");
-        break;
+    try {
+      if (dataKills[index].type === "actsLogued") {
+        const dataAcct = await accountsModels.findOne({_id: dataKills[index].acct_id});
+        if (!dataAcct) {
+          console.log("cuenta no encotrada");
+          break;
+        }
+        dataAcct.isUsed=false;
+        await dataAcct.save();
+        const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
+        if (!dataProxy) {
+          break;
+        }
+        if (dataProxy.Nusers < 10) {
+          dataProxy.isFull=false
+        }
+        dataProxy.Nusers--
+        await dataProxy.save();
+        await killBots.deleteOne({_id: dataKills[index]._id});
+        try {
+          demo();
+          process.kill(dataKills[index].NmrKill);
+          console.log("kill bot");
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else{
+        const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
+        if (!dataProxy) {
+          break;
+        }
+        if (dataProxy.NusersAny < 30) {
+          dataProxy.isFullAny=false
+        }
+        dataProxy.NusersAny--
+        await dataProxy.save();
+        await killBots.deleteOne({_id: dataKills[index]._id});
+        try {
+          demo();
+          process.kill(dataKills[index].NmrKill);
+          console.log("kill bot");
+        } catch (error) {
+          console.log(error.message);
+        }
       }
-      dataAcct.isUsed=false;
-      await dataAcct.save();
-      const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
-      if (!dataProxy) {
-        break;
-      }
-      if (dataProxy.Nusers < 10) {
-        dataProxy.isFull=false
-      }
-      dataProxy.Nusers--
-      await dataProxy.save();
-      await killBots.deleteOne({_id: dataKills[index]._id});
-      try {
-        demo();
-        process.kill(dataKills[index].NmrKill);
-        console.log("kill bot");
-      } catch (error) {
-        console.log(error.message);
-      }
-    } else{
-      const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
-      if (!dataProxy) {
-        break;
-      }
-      if (dataProxy.NusersAny < 30) {
-        dataProxy.isFullAny=false
-      }
-      dataProxy.NusersAny--
-      await dataProxy.save();
-      await killBots.deleteOne({_id: dataKills[index]._id});
-      try {
-        demo();
-        process.kill(dataKills[index].NmrKill);
-        console.log("kill bot");
-      } catch (error) {
-        console.log(error.message);
-      }
+    } catch (error) {
+      console.log("Error en killbots");
     }
   }
 
