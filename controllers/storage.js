@@ -161,6 +161,7 @@ const getAccts = async (req, res) => {
     });
   }
 }
+
 const getAcctsFree = async (req, res) => {
   const acctsModels = await accountsModels.find({isUsed: false})
   if (acctsModels) {
@@ -177,9 +178,9 @@ const getAcctsFree = async (req, res) => {
   }
 }
 
-const getKillBotsByModel = async (req, res) => {
-  const {nameModel} = req.body;
-  const acctsModels = await killBotsModels.find({nameModel})
+const getKillBotsByModelAndRegisterBotC = async (req, res) => {
+  const { nameModel, id_registerBotCompany } = req.body;
+  const acctsModels = await killBotsModels.find({nameModel, id_registerBotCompany})
   if (acctsModels) {
     return res.status(200).send({
       success: true,
@@ -209,4 +210,4 @@ const createKillbots = async (req, res) => {
   });
 }
 
-module.exports = {createProxys, createProxysString, createAcct, getProxys, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModel};
+module.exports = {createProxys, createProxysString, createAcct, getProxys, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};

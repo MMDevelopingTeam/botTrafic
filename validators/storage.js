@@ -50,6 +50,9 @@ const getKillBotsValidator = [
     check('nameModel', 'El campo es requerido')
     .exists()
     .notEmpty(),
+    check('id_registerBotCompany', 'El campo es requerido')
+    .exists()
+    .notEmpty(),
     (req, res, next) => {
         validateResult(req, res, next)
     }

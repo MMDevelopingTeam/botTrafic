@@ -5,7 +5,7 @@ const acctModels = require('../models/accounts');
 const killBots = require('../models/killBots');
 
 
-const launchBotVDos = async (proxy, id, name_model, username, password, index) => {
+const launchBotVDos = async (proxy, id, name_model, username, password, index, idRegisterCompBotContainer) => {
     
     process.setMaxListeners(Infinity);
     const browser = await puppeteer.launch({
@@ -33,6 +33,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index) =
         nameModel: name_model,
         acct_id: id,
         type: 'actsLogued',
+        idRegisterCompBotContainer,
         proxy
     })
     
@@ -104,7 +105,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index) =
     }
 }
 
-const vDosBot = async (name_model, proxy) => {
+const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
     process.setMaxListeners(Infinity);
     const browser = await puppeteer.launch({
         args: [
@@ -131,7 +132,8 @@ const vDosBot = async (name_model, proxy) => {
         NmrKill: browserPID,
         nameModel: name_model,
         type: 'actsAny',
-        proxy
+        proxy,
+        idRegisterCompBotContainer
     })
     
     const dataKIll = await newIdKBot.save();

@@ -7,6 +7,7 @@ const KillBotSchema = new mongoose.Schema(
         acct_id: { type: mongoose.Schema.Types.ObjectId },
         type: { type: String, required: true },
         proxy: { type: String, required: true },
+        idRegisterCompBotContainer: { type: String, required: true },
     }
 )
 
