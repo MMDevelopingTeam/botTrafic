@@ -28,7 +28,8 @@ const getBot = async (req, res) => {
     userId: dataLaunch.userId,
     headquarterId: dataLaunch.headquarter,
     companyId: dataLaunch.company,
-    numberBots: dataLaunch.nBots
+    numberBots: dataLaunch.nBots,
+    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer
   })
   await newLog.save();
   console.log("log registrado");
@@ -177,7 +178,8 @@ const getBotAny = async (req, res) => {
     userId: dataLaunch.userId,
     headquarterId: dataLaunch.headquarter,
     companyId: dataLaunch.company,
-    numberBots: dataLaunch.nBots
+    numberBots: dataLaunch.nBots,
+    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer
   })
   await newLog.save();
   console.log("log registrado");
@@ -305,7 +307,8 @@ const getBotMixed = async (req, res) => {
     userId: dataLaunch.userId,
     headquarterId: dataLaunch.headquarter,
     companyId: dataLaunch.company,
-    numberBots: dataLaunch.nBots
+    numberBots: dataLaunch.nBots,
+    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer
   })
   let iInicial = dataLaunch.nBots*3
   let iFinal = Number(iInicial)

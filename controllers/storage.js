@@ -180,7 +180,7 @@ const getAcctsFree = async (req, res) => {
 
 const getKillBotsByModelAndRegisterBotC = async (req, res) => {
   const { nameModel, id_registerBotCompany } = req.body;
-  const acctsModels = await killBotsModels.find({nameModel, id_registerBotCompany})
+  const acctsModels = await killBotsModels.find({nameModel, idRegisterCompBotContainer: id_registerBotCompany})
   if (acctsModels) {
     return res.status(200).send({
       success: true,
