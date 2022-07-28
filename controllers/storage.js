@@ -1,6 +1,7 @@
 const fs = require("fs");
 const proxysModels = require('../models/proxys');
 const accountsModels = require('../models/accounts');
+const logLaunchModels = require('../models/logLaunch');
 const killBotsModels = require('../models/killBots');
 
 const createProxys = async (req, res) => {
@@ -210,4 +211,47 @@ const createKillbots = async (req, res) => {
   });
 }
 
-module.exports = {createProxys, createProxysString, createAcct, getProxys, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
+const reset = async (req, res) => {
+  const dataProxys = await proxysModels.find()
+  if (!dataProxys) {
+    return res.status(400).send({
+      success: false,
+      message: 'Proxys no encontrados'
+    });
+  }
+  const dataActs = await accountsModels.find()
+  if (!dataActs) {
+    return res.status(400).send({
+      success: false,
+      message: 'Cuentas no encontradas'
+    });
+  }
+  try {
+    for (let indexUno = 0; indexUno < dataProxys.length; indexUno++) {
+      const dataProxy = await proxysModels.findOne({_id: dataProxys[indexUno]._id})
+      dataProxy.isFull=false
+      dataProxy.isFullAny=false
+      dataProxy.Nusers=0
+      dataProxy.NusersAny=0
+      await dataProxy.save()
+    }
+    for (let indexDos = 0; indexDos < dataActs.length; indexDos++) {
+      const dataAct = await accountsModels.findOne({_id: dataActs[indexDos]._id})
+      dataAct.isUsed=false
+      await dataAct.save()
+    }
+    await killBotsModels.deleteMany()
+    await logLaunchModels.deleteMany()
+    return res.status(400).send({
+      success: false,
+      message: 'bot reseteado correctamente'
+    });
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
+module.exports = {createProxys, createProxysString, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
