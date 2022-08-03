@@ -1,5 +1,5 @@
 const express = require("express");
-const { createProxys, createAcct, getProxys, getAccts, createKillbots, getAcctsFree, getProxysFree, createProxysString, getKillBotsByModelAndRegisterBotC, reset } = require("../controllers/storage");
+const { createProxys, createAcct, getProxys, getAccts, createKillbots, getAcctsFree, getProxysFree, createProxysString, getKillBotsByModelAndRegisterBotC, reset, mac } = require("../controllers/storage");
 const uploadMiddleware = require("../utils/handleStorage");
 const { validateStorageKillBot, getKillBotsValidator, getCreateProxysString } = require("../validators/storage");
 const router = express.Router();
@@ -13,6 +13,7 @@ router.post("/getKillBotsByModel", getKillBotsValidator, getKillBotsByModelAndRe
 router.get("/getproxys", getProxys);
 router.get("/getproxysFree", getProxysFree);
 router.get("/getaccts", getAccts);
+router.get("/mac", mac);
 router.post("/reset", reset);
  
 module.exports = router; 

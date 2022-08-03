@@ -260,17 +260,17 @@ const killBotAny = async (req, res) => {
   }
   
   for (let index = 0; index < dataKillbot.nBots; index++) {
-    const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
-    if (!dataProxy) {
-      break;
-    }
-    if (dataProxy.NusersAny < 30) {
-      dataProxy.isFullAny=false
-    }
-    dataProxy.NusersAny--
-    await dataProxy.save();
-    await killBots.deleteOne({_id: dataKills[index]._id});
     try {
+      const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
+      if (!dataProxy) {
+        break;
+      }
+      if (dataProxy.NusersAny < 30) {
+        dataProxy.isFullAny=false
+      }
+      dataProxy.NusersAny--
+      await dataProxy.save();
+      await killBots.deleteOne({_id: dataKills[index]._id});
       demo();
       process.kill(dataKills[index].NmrKill);
       console.log("kill bot");

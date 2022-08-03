@@ -1,4 +1,5 @@
 const fs = require("fs");
+const exec = require('child_process').exec
 const proxysModels = require('../models/proxys');
 const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
@@ -254,4 +255,14 @@ const reset = async (req, res) => {
   }
 }
 
-module.exports = {createProxys, createProxysString, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
+const mac = async (req, res) => {
+  // exec('ipconfig/all',(err, stdout) => {
+  //     if (err) {
+  //         return console.log(err.message);
+  //     }
+  //     return console.log(stdout);
+  // });
+  console.log(req.connection.remoteAddress);
+}
+
+module.exports = {createProxys, createProxysString, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
