@@ -39,9 +39,9 @@ const generatorNames = async () => {
 
             dataName.push({username, password: '12345678CuentaUsrCh'})
         }
-        console.log(dataName);
+        // console.log(dataName);
         fs.writeFileSync(nameFile, JSON.stringify(dataName))
-        console.log("archivo creado");
+        // console.log("archivo creado");
         await browser.close();
 
 };

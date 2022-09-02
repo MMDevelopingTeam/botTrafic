@@ -13,7 +13,7 @@ const readFileProxy = async () => {
             const proxy = archivo.split(",")
             return proxy;
         })
-        console.log("contenido del archivo");
+        // console.log("contenido del archivo");
     })
 }
 
@@ -29,7 +29,7 @@ const readFileAccounts = async () => {
             const accounts = archivo.split(",")
             return accounts;
         })
-        console.log("contenido del archivo");
+        // console.log("contenido del archivo");
     })
 }
 
@@ -45,7 +45,7 @@ const readFileModels = async () => {
             const models = archivo.split(",")
             return models;
         })
-        console.log("contenido del archivo");
+        // console.log("contenido del archivo");
     })
 }
 

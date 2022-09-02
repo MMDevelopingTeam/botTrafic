@@ -1,9 +1,9 @@
 const fs = require("fs");
-const exec = require('child_process').exec
 const proxysModels = require('../models/proxys');
 const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
 const killBotsModels = require('../models/killBots');
+const {testProxys} = require('../utils/stateProxys');
 
 const createProxys = async (req, res) => {
   const { file } = req
@@ -115,8 +115,8 @@ const createAcct = async (req, res) => {
 };
 
 const getProxys = async (req, res) => {
-  const prsModels = await proxysModels.find()
-  if (proxysModels) {
+  const prsModels = await proxysModels.find().sort({ms: 1})
+  if (prsModels) {
     return res.status(200).send({
       success: true,
       message: 'proxys encontrados',
@@ -243,8 +243,8 @@ const reset = async (req, res) => {
     }
     await killBotsModels.deleteMany()
     await logLaunchModels.deleteMany()
-    return res.status(400).send({
-      success: false,
+    return res.status(200).send({
+      success: true,
       message: 'bot reseteado correctamente'
     });
   } catch (error) {
@@ -265,4 +265,12 @@ const mac = async (req, res) => {
   console.log(req.connection.remoteAddress);
 }
 
-module.exports = {createProxys, createProxysString, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
+const msProxys = async (req, res) => {
+  await testProxys()
+  return res.status(200).send({
+    success: true,
+    message: 'Comprobando latencia de proxys'
+  });
+}
+
+module.exports = {createProxys, createProxysString, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};

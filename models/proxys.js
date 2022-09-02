@@ -7,6 +7,7 @@ const ProxysSchema = new mongoose.Schema(
         isFullAny: { type: Boolean, default: false },
         Nusers: { type: Number, default: 0 },
         NusersAny: { type: Number, default: 0 },
+        ms: { type: Number },
         isDown: { type: Boolean, default: false }
     }
 )

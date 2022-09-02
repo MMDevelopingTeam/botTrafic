@@ -87,7 +87,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
             }
             await dataUsr.save();
             await dataProxy.save();
-            await killBots.deleteOne({_id: dataKIll._id})
+            // await killBots.deleteOne({_id: dataKIll._id})
             await browser.close()
             return;
         }

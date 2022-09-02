@@ -43,7 +43,7 @@ const getBot = async (req, res) => {
       });
       break;
     }
-    const dataProxy = await proxysModels.findOne({isFull: false})
+    const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
     if (!dataProxy) {
       res.status(400).send({
         success: false,
@@ -185,7 +185,7 @@ const getBotAny = async (req, res) => {
   console.log("log registrado");
 
   for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
-    const dataProxy = await proxysModels.findOne({isFullAny: false})
+    const dataProxy = await proxysModels.findOne({isFullAny: false}).sort({ms: 1})
     if (!dataProxy) {
       res.status(400).send({
         success: false,
@@ -312,7 +312,7 @@ const getBotMixed = async (req, res) => {
   })
   let iInicial = dataLaunch.nBots*3
   let iFinal = Number(iInicial)
-  console.log(iFinal);
+  // console.log(iFinal);
 
   await newLog.save();
   console.log("log registrado");
@@ -326,7 +326,7 @@ const getBotMixed = async (req, res) => {
       });
       break;
     }
-    const dataProxy = await proxysModels.findOne({isFull: false})
+    const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
     if (!dataProxy) {
       res.status(400).send({
         success: false,
@@ -353,7 +353,7 @@ const getBotMixed = async (req, res) => {
   }
 
   for (let indexAcc = 1; indexAcc < (iFinal+1); indexAcc++) {
-    const dataProxy = await proxysModels.findOne({isFullAny: false})
+    const dataProxy = await proxysModels.findOne({isFullAny: false}).sort({ms: 1})
     if (!dataProxy) {
       res.status(400).send({
         success: false,
