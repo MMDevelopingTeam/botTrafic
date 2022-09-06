@@ -85,10 +85,10 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
             if (dataProxy.Nusers <= 10) {
                 dataProxy.isFull=false
             }
-            await dataUsr.save();
-            await dataProxy.save();
+            // await dataUsr.save();
+            // await dataProxy.save();
             // await killBots.deleteOne({_id: dataKIll._id})
-            await browser.close()
+            // await browser.close()
             return;
         }
         await page.waitForTimeout(1000)
