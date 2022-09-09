@@ -1,4 +1,4 @@
-const { launchBotVDos, vDosBot } = require("../utils/launchBot");
+const { launchBotVDos, vDosBot, botDebug } = require("../utils/launchBot");
 const killBots = require('../models/killBots');
 const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
@@ -501,4 +501,8 @@ const status = async (req, res) => {
 });
 }
 
-module.exports = {getBot, killBot, getBotAny, killBotAny, getBotMixed, killBotMixed, status};
+const botDebugControl = async (req, res) => {
+  botDebug('166.88.111.158:8800', '12345', 'dihobula6', '12345678CuentaUsrCh', '1');
+}
+
+module.exports = {getBot, botDebugControl, killBot, getBotAny, killBotAny, getBotMixed, killBotMixed, status};

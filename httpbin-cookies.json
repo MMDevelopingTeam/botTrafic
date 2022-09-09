@@ -1,12 +1,16 @@
 [
     {
         "domain": "chaturbate.com",
+        "expirationDate": 1694109388,
         "hostOnly": true,
         "httpOnly": false,
         "name": "agreeterms",
         "path": "/",
+        "sameSite": "unspecified",
         "secure": false,
         "session": false,
-        "value": "1"
+        "storeId": "0",
+        "value": "1",
+        "id": 9
     }
 ]
