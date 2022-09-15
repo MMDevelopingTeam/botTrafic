@@ -156,7 +156,6 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
 
 }
 
-
 const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
     process.setMaxListeners(Infinity);
     const browser = await puppeteer.launch({

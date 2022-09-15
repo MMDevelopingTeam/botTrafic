@@ -154,7 +154,7 @@ const getAccts = async (req, res) => {
     return res.status(200).send({
       success: true,
       message: 'Cuentas encotradas',
-      acctsModelslength: acctsModels.length,
+      acctslength: acctsModels.length,
     });
   } else {
     return res.status(400).send({
@@ -273,4 +273,31 @@ const msProxys = async (req, res) => {
   });
 }
 
-module.exports = {createProxys, createProxysString, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
+const getInfoBot = async (req, res) => {
+  try {
+    const acctsModels = await accountsModels.find()
+    const acctsFreeModels = await accountsModels.find({isUsed: false})
+    const dataP = await proxysModels.find()
+    const dataPFree = await proxysModels.find({isFull: false})
+    const dataK = await killBotsModels.find()
+    const dataL = await logLaunchModels.find().sort({date: -1})
+    return res.status(200).send({
+      success: true,
+      message: 'Info obtenida correctamente',
+      acctsLength: acctsModels.length,
+      acctsFreeLength: acctsFreeModels.length,
+      proxyLength: dataP.length,
+      proxyFreeLength: dataPFree.length,
+      killbotsLength: dataK.length,
+      ip: process.env.MI_IP,
+      log: dataL,
+    });
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
+module.exports = {createProxys, getInfoBot, createProxysString, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};

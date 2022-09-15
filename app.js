@@ -9,7 +9,7 @@ const axios = require('axios');
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
     // console.log('addr: '+add);
-    let url = `http://${process.env.IPSRV}:3020/api/botContainer/updateByIp/${process.env.IPSRV}`;
+    let url = `http://${process.env.IPSRV}:3020/api/botContainer/updateByIp/${process.env.MI_IP}`;
     axios.put(url, {isActive: true})
     .then(function (response) {
         console.log(response.data);
