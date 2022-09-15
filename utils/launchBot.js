@@ -271,7 +271,7 @@ async function open_tab( url , browser ){
     const b = (await page.$x("//*[@id='room_list']/li"))[7]
     b.click()
     await page.waitForTimeout(5000)
-    await page.screenshot({path: `storage/2.jpg`})
+    // await page.screenshot({path: `storage/2.jpg`})
     return;
 }
 async function open_tabDos( url , browser, proxy, name_model, username, password, index ){
@@ -300,7 +300,7 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
             console.log("Bot:", index);
             console.log("cuenta no logueada");  
             console.log("###########################################"); 
-            await page.screenshot({path: `storage/${username}1.jpg`})
+            // await page.screenshot({path: `storage/${username}1.jpg`})
             // const dataUsr = await acctModels.findOne({_id: id})
             // dataUsr.isUsed=false
             // const dataProxy = await proxysModels.findOne({proxy})
