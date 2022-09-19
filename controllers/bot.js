@@ -26,10 +26,10 @@ const getBot = async (req, res) => {
     date: currentDate,
     name_model: dataLaunch.nameModel,
     userId: dataLaunch.userId,
-    headquarterId: dataLaunch.headquarter,
     companyId: dataLaunch.company,
     numberBots: dataLaunch.nBots,
-    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer
+    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer,
+    typeBot: dataLaunch.typeBot
   })
   await newLog.save();
   console.log("log registrado");
@@ -176,10 +176,10 @@ const getBotAny = async (req, res) => {
     date: currentDate,
     name_model: dataLaunch.nameModel,
     userId: dataLaunch.userId,
-    headquarterId: dataLaunch.headquarter,
     companyId: dataLaunch.company,
     numberBots: dataLaunch.nBots,
-    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer
+    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer,
+    typeBot: dataLaunch.typeBot
   })
   await newLog.save();
   console.log("log registrado");
@@ -305,10 +305,10 @@ const getBotMixed = async (req, res) => {
     date: currentDate,
     name_model: dataLaunch.nameModel,
     userId: dataLaunch.userId,
-    headquarterId: dataLaunch.headquarter,
     companyId: dataLaunch.company,
     numberBots: dataLaunch.nBots,
-    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer
+    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer,
+    typeBot: dataLaunch.typeBot
   })
   let iInicial = dataLaunch.nBots*3
   let iFinal = Number(iInicial)

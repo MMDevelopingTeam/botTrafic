@@ -106,44 +106,44 @@ const killBots = require('../models/killBots');
 // }
 const launchBotVDos = async (proxy, id, name_model, username, password, index, idRegisterCompBotContainer) => {
     
-    process.setMaxListeners(Infinity);
-    const browser = await puppeteer.launch({
-        args: [
-            `--proxy-server=${proxy}`,
-            "--start-maximized",
-            "--disable-web-security",
-            "--disable-extensions",
-            "--disable-notifications",
-            "--ignore-certificate-errors",
-            "--no-sandbox",
-            "--disable-gpu",
-            "--log-level=3",
-            "--allow-running-insecure-content",
-            "--no-default-browser-check",
-            "--no-first-run",
-            "--disable-blink-features=AutomationControlled",
-            "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
-        ],
-        headless: false
-    })
-    const browserPID = browser.process().pid
-    const newIdKBot = new killBots({
-        NmrKill: browserPID,
-        nameModel: name_model,
-        acct_id: id,
-        type: 'actsLogued',
-        idRegisterCompBotContainer,
-        proxy
-    })
-    
-    await newIdKBot.save();
-    const page = (await browser.pages())[0];
-    await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
-    const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
-    const deserializedCookies = JSON.parse(cookies);
-    await page.setCookie(...deserializedCookies);
-
     try {
+        process.setMaxListeners(Infinity);
+        const browser = await puppeteer.launch({
+            args: [
+                `--proxy-server=${proxy}`,
+                "--start-maximized",
+                "--disable-web-security",
+                "--disable-extensions",
+                "--disable-notifications",
+                "--ignore-certificate-errors",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--log-level=3",
+                "--allow-running-insecure-content",
+                "--no-default-browser-check",
+                "--no-first-run",
+                "--disable-blink-features=AutomationControlled",
+                "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
+            ],
+            headless: false
+        })
+        const browserPID = browser.process().pid
+        const newIdKBot = new killBots({
+            NmrKill: browserPID,
+            nameModel: name_model,
+            acct_id: id,
+            type: 'actsLogued',
+            idRegisterCompBotContainer,
+            proxy
+        })
+
+        await newIdKBot.save();
+        const page = (await browser.pages())[0];
+        await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
+        const deserializedCookies = JSON.parse(cookies);
+        await page.setCookie(...deserializedCookies);
+        /////////////////////////////////////////////////////////////////////////////
         await open_tab('https://chaturbate.com/' , browser);
         await page.waitForTimeout(20000)
         await open_tabDos('https://chaturbate.com/auth/login/' , browser, proxy, name_model, username, password, index);
@@ -157,51 +157,52 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
 }
 
 const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
-    process.setMaxListeners(Infinity);
-    const browser = await puppeteer.launch({
-        args: [
-            `--proxy-server=${proxy}`,
-            // `--proxy-server=138.128.119.188:8800`,
-            "--start-maximized",
-            "--disable-web-security",
-            "--disable-extensions",
-            "--disable-notifications",
-            "--ignore-certificate-errors",
-            "--no-sandbox",
-            "--disable-gpu",
-            "--log-level=3",
-            "--allow-running-insecure-content",
-            "--no-default-browser-check",
-            "--no-first-run",
-            "--disable-blink-features=AutomationControlled",
-            "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
-        ],
-        headless: true
-    })
-    const browserPID = browser.process().pid
-    const newIdKBot = new killBots({
-        NmrKill: browserPID,
-        nameModel: name_model,
-        type: 'actsAny',
-        proxy,
-        idRegisterCompBotContainer
-    })
-    
-    const dataKIll = await newIdKBot.save();
-    
-    const page = (await browser.pages())[0];
-    await page.setDefaultNavigationTimeout(0);
-    await page.setViewport({
-        width: 1920,
-        height: 947,
-    });
-    await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41");
-
-    const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
-    const deserializedCookies = JSON.parse(cookies);
-    await page.setCookie(...deserializedCookies);
-    await page.waitForTimeout(2000)
     try {
+        process.setMaxListeners(Infinity);
+        const browser = await puppeteer.launch({
+            args: [
+                `--proxy-server=${proxy}`,
+                // `--proxy-server=138.128.119.188:8800`,
+                "--start-maximized",
+                "--disable-web-security",
+                "--disable-extensions",
+                "--disable-notifications",
+                "--ignore-certificate-errors",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--log-level=3",
+                "--allow-running-insecure-content",
+                "--no-default-browser-check",
+                "--no-first-run",
+                "--disable-blink-features=AutomationControlled",
+                "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
+            ],
+            headless: true
+        })
+        const browserPID = browser.process().pid
+        const newIdKBot = new killBots({
+            NmrKill: browserPID,
+            nameModel: name_model,
+            type: 'actsAny',
+            proxy,
+            idRegisterCompBotContainer
+        })
+
+        const dataKIll = await newIdKBot.save();
+
+        const page = (await browser.pages())[0];
+        await page.setDefaultNavigationTimeout(0);
+        await page.setViewport({
+            width: 1920,
+            height: 947,
+        });
+        await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41");
+
+        const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
+        const deserializedCookies = JSON.parse(cookies);
+        await page.setCookie(...deserializedCookies);
+        await page.waitForTimeout(2000)
+        //////////////////////////////////////////////////////////////////////////////
         await page.goto(`https://chaturbate.com/${name_model}`);
         await page.waitForTimeout(1000)
         console.log("=====================");
@@ -214,44 +215,45 @@ const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
 
 const botDebug = async (proxy, name_model, username, password, index) => {
     
-    process.setMaxListeners(Infinity);
-    const browser = await puppeteer.launch({
-        args: [
-            `--proxy-server=${proxy}`,
-            "--start-maximized",
-            "--disable-web-security",
-            "--disable-extensions",
-            "--disable-notifications",
-            "--ignore-certificate-errors",
-            "--no-sandbox",
-            "--disable-gpu",
-            "--log-level=3",
-            "--allow-running-insecure-content",
-            "--no-default-browser-check",
-            "--no-first-run",
-            "--disable-blink-features=AutomationControlled",
-            "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
-        ],
-        headless: false
-    })
-    const browserPID = browser.process().pid
-    // const newIdKBot = new killBots({
-    //     NmrKill: browserPID,
-    //     nameModel: name_model,
-    //     acct_id: id,
-    //     type: 'actsLogued',
-    //     idRegisterCompBotContainer,
-    //     proxy
-    // })
-    
-    // await newIdKBot.save();
-    const page = (await browser.pages())[0];
-    await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
-    const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
-    const deserializedCookies = JSON.parse(cookies);
-    await page.setCookie(...deserializedCookies);
-
     try {
+        process.setMaxListeners(Infinity);
+        const browser = await puppeteer.launch({
+            args: [
+                `--proxy-server=${proxy}`,
+                "--start-maximized",
+                "--disable-web-security",
+                "--disable-extensions",
+                "--disable-notifications",
+                "--ignore-certificate-errors",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--log-level=3",
+                "--allow-running-insecure-content",
+                "--no-default-browser-check",
+                "--no-first-run",
+                "--disable-blink-features=AutomationControlled",
+                "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
+            ],
+            headless: false
+        })
+        const browserPID = browser.process().pid
+        // const newIdKBot = new killBots({
+        //     NmrKill: browserPID,
+        //     nameModel: name_model,
+        //     acct_id: id,
+        //     type: 'actsLogued',
+        //     idRegisterCompBotContainer,
+        //     proxy
+        // })
+
+        // await newIdKBot.save();
+        const page = (await browser.pages())[0];
+        await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
+        const deserializedCookies = JSON.parse(cookies);
+        await page.setCookie(...deserializedCookies);
+
+        ///////////////////////////////////////////////////////////////////////////////////
         await open_tab('https://chaturbate.com/' , browser);
         await page.waitForTimeout(20000)
         await open_tabDos('https://chaturbate.com/auth/login/' , browser, proxy, name_model, username, password, index);
@@ -264,21 +266,26 @@ const botDebug = async (proxy, name_model, username, password, index) => {
 }
 
 async function open_tab( url , browser ){
-    const  page  = await browser.newPage();
-    await page.setViewport({width: 1200, height: 1000});
-    await page.goto( url );
-    await page.waitForTimeout(3000)
-    const b = (await page.$x("//*[@id='room_list']/li"))[7]
-    b.click()
-    await page.waitForTimeout(5000)
-    // await page.screenshot({path: `storage/2.jpg`})
-    return;
+    try {
+        const  page  = await browser.newPage();
+        await page.setViewport({width: 1200, height: 1000});
+        await page.goto( url );
+        await page.waitForTimeout(3000)
+        const b = (await page.$x("//*[@id='room_list']/li"))[7]
+        b.click()
+        await page.waitForTimeout(5000)
+        // await page.screenshot({path: `storage/2.jpg`})
+        return;
+    } catch (error) {
+        console.log(error.message);
+    }
 }
 async function open_tabDos( url , browser, proxy, name_model, username, password, index ){
-    const  page  = await browser.newPage();
-    await page.setViewport({width: 1200, height: 1000});
-    await page.goto( url );
     try {
+        const  page  = await browser.newPage();
+        await page.setViewport({width: 1200, height: 1000});
+        await page.goto( url );
+        ///////////////////////////////////////////////////////////
         await page.waitForTimeout(8000)
         await page.keyboard.type(username)
         await page.keyboard.press('Tab')

@@ -4,6 +4,7 @@ const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
 const killBotsModels = require('../models/killBots');
 const {testProxys} = require('../utils/stateProxys');
+const axios = require('axios');
 
 const createProxys = async (req, res) => {
   const { file } = req
@@ -243,6 +244,9 @@ const reset = async (req, res) => {
     }
     await killBotsModels.deleteMany()
     await logLaunchModels.deleteMany()
+    
+    let url = `http://${process.env.MI_IP}:3020/api/tableLogLaunch/reset`;
+    await axios(url)
     return res.status(200).send({
       success: true,
       message: 'bot reseteado correctamente'
@@ -300,4 +304,27 @@ const getInfoBot = async (req, res) => {
   }
 }
 
-module.exports = {createProxys, getInfoBot, createProxysString, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
+const getStatsAdmin = async (req, res) => {
+  const { id } = req.params
+  if (id === ':id') {
+      return res.status(400).send({
+          success: false,
+          message: "id es requerido"
+      });
+  }
+  try {
+    const dataL = await logLaunchModels.find({companyId: id}).sort({date: -1})
+    return res.status(200).send({
+      success: true,
+      message: 'Info obtenida correctamente',
+      logBotsByCompany: dataL
+    });
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
+module.exports = {createProxys, getInfoBot, createProxysString, getStatsAdmin, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
