@@ -3,8 +3,8 @@ const proxysModels = require('../models/proxys');
 const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
 const killBotsModels = require('../models/killBots');
-const {testProxys} = require('../utils/stateProxys');
 const axios = require('axios');
+const {testProxys} = require('../utils/stateProxys');
 
 const createProxys = async (req, res) => {
   const { file } = req

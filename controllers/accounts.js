@@ -2,6 +2,7 @@ const proxyModels = require('../models/proxys');
 const accountsModels = require('../models/accounts');
 const {launchBotCreate} = require('../utils/createAccouts');
 const { generatorNames } = require('../utils/generatorNames');
+const fs = require('fs');
 
 
 const createAccount = async (req, res) => {
@@ -31,9 +32,18 @@ const createAccounts = async (req, res) => {
     }
     try {
         for (let index = 0; index < nInt; index++) {
+            const dataP = await proxyModels.find().sort({ms: 1});
             console.log("interacion:", index);
             await generatorNames()
-            await launchBotCreate()
+            const nameFile="storage/nameArray.txt"
+            const data = fs.readFileSync(nameFile, 'utf-8');
+            const dataPar=JSON.parse(data)
+            for (let index = 0; index < dataPar.length; index++) {
+                const username = dataPar[index].username;
+                const password = dataPar[index].password;
+                await launchBotCreate(dataP[index].proxy, username, password)
+            }
+            fs.unlinkSync(`${nameFile}`)
         }
         return res.status(200).send({
             success: true,
