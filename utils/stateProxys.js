@@ -21,7 +21,7 @@ const testProxys = async () => {
             "--disable-blink-features=AutomationControlled",
             "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
         ],
-        headless: true
+        headless: false
     })
     
     const page = (await browser.pages())[0];
@@ -37,7 +37,7 @@ const testProxys = async () => {
         await page.waitForTimeout(1000)
         const dataP = await proxysModels.find();
         if (!dataP) {
-            return console.log("dataP");
+            return console.log("No hay proxys");
         }
         const frames = await page.frames();
         const myFrame = frames.find(
@@ -74,8 +74,10 @@ const testProxys = async () => {
             }
             if (stateProxy === 'ONLINE') {
                 dataProxy.ms=Number(ms)
+                dataProxy.isDown=false
             }
             if (stateProxy === 'FAILED') {
+                dataProxy.ms=0
                 dataProxy.isDown=true
             }
             await dataProxy.save();

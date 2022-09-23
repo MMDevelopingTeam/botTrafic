@@ -5,6 +5,8 @@ require("dotenv").config();
 const bodyParser = require('body-parser');
 const app = express()
 const axios = require('axios');
+const schedule = require('node-schedule');
+const { msProxys } = require("./utils/msProxysBots");
 
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
@@ -48,6 +50,11 @@ const port = process.env.PORT || 3000
 app.use("/api", require("./routes"))
 
 initDB();
+
+schedule.scheduleJob('0 */8 * * *', () => {
+    console.log("Ejecuntando test latencia proxys");
+    msProxys();
+})
 
 app.listen(port, () => {
     console.log(`App lista por http://localhost:${port}`);
