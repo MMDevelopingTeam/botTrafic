@@ -21,7 +21,7 @@ const testProxys = async () => {
             "--disable-blink-features=AutomationControlled",
             "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
         ],
-        headless: false
+        headless: true
     })
     
     const page = (await browser.pages())[0];

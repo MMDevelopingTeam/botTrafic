@@ -52,6 +52,7 @@ app.use("/api", require("./routes"))
 initDB();
 
 schedule.scheduleJob('0 */8 * * *', () => {
+// schedule.scheduleJob('*/40 * * * * *', () => {
     console.log("Ejecuntando test latencia proxys");
     msProxys();
 })
