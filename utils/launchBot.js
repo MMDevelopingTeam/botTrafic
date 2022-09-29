@@ -306,7 +306,13 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
             console.log("proxy:", proxy);
             console.log("Bot:", index);
             console.log("cuenta no logueada");  
-            console.log("###########################################"); 
+            console.log("###########################################");
+            const dataC = await acctModels.findOne({username})
+            dataC.stricks++
+            if (dataC.stricks === 5) {
+                dataC.isWorking = false
+            }
+            await dataC.save();
             // await page.screenshot({path: `storage/${username}1.jpg`})
             // const dataUsr = await acctModels.findOne({_id: id})
             // dataUsr.isUsed=false

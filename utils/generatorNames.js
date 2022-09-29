@@ -9,6 +9,7 @@ const generatorNames = async () => {
                 "--disable-notifications",
                 "--ignore-certificate-errors",
                 "--no-sandbox",
+                "--start-maximized",
                 "--disable-gpu",
                 "--log-level=3",
                 "--allow-running-insecure-content",
@@ -20,7 +21,10 @@ const generatorNames = async () => {
             headless: true
         });
         const page = (await browser.pages())[0];
-
+        await page.setViewport({
+            width: 1920,
+            height: 1080,
+        });
         await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36");
         const dataName = []
         const nameFile="storage/nameArray.txt"
@@ -28,18 +32,32 @@ const generatorNames = async () => {
         if (files) {
             fs.unlinkSync(`${nameFile}`)
         }
-        for (let index = 0; index < 20; index++) {
-            await page.goto('https://generadordenombres.online/empresas/#');
-            const name = await page.evaluate(() => document.querySelector('.resultadoGenerado').innerText);
-            const nameCmp=name.replace(/ S.L./g, `${Math.floor((Math.random() * (100-1))+1)}`)
-            const nameCmp2=nameCmp.replace(/ S.A./g, `${Math.floor((Math.random() * (100-1))+1)}`)
-            const usernameF=nameCmp2.replace(/-/g, '')
-            const usernamea=usernameF.replace(/ñ/g, 'n')
-            const username=usernamea.toLowerCase()
-
-            dataName.push({username, password: '12345678CuentaUsrCh'})
+        await page.goto('https://fossbytes.com/tools/es/random-name-generator', {
+            waitUntil: 'load',
+            // Remove the timeout
+            timeout: 0
+        });
+        await page.waitForTimeout(500)
+        await page.type('#totalNames', "20")
+        await page.waitForTimeout(500)
+        await page.select('#language', `en`)
+        await page.waitForTimeout(500)
+        await page.click('#male')
+        await page.waitForTimeout(500)
+        await page.keyboard.press('Tab')
+        await page.waitForTimeout(500)
+        await page.keyboard.press('Enter')
+        await page.waitForTimeout(500)
+        for (let index = 1; index < 21; index++) {
+            const [button] = await page.$x(`/html/body/div/div[1]/div/div[3]/div[2]/div/div[2]/div[2]/ul/li[${index}]`);
+            let getMsg = await page.evaluate(name => name.innerText, button);
+            getMsg=getMsg.split(' ')
+            let username = getMsg[0]+Math.floor((Math.random() * (100-1))+1)+getMsg[1]
+            username=username.replace(/ñ/g, 'n')
+            username=username.replace('.', '')
+            let usernameFinal=username.toLowerCase()
+            dataName.push({username: usernameFinal, password: '12345678CuentaUsrCh'})
         }
-        // console.log(dataName);
         fs.writeFileSync(nameFile, JSON.stringify(dataName))
         // console.log("archivo creado");
         await browser.close();

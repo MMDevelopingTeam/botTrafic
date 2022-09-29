@@ -6,7 +6,15 @@ const bodyParser = require('body-parser');
 const app = express()
 const axios = require('axios');
 const schedule = require('node-schedule');
-const { msProxys } = require("./utils/msProxysBots");
+const { msProxys, acctsOff } = require("./utils/msProxysBots");
+// const cache = require('express-expeditious')({
+//     namespace: 'expresscache',
+//     defaultTtl: '10 minute',
+//     statusCodeExpires: {
+//       404: '5minutes',
+//       500: 0
+//     }
+// })
 
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
@@ -21,7 +29,8 @@ require('dns').lookup(require('os').hostname(), function (err, add, fam) {
     });
 })
 
-app.use(cors())
+// app.use(cache);
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json())
 app.use(
     bodyParser.json({limit: '20mb'})
@@ -51,10 +60,11 @@ app.use("/api", require("./routes"))
 
 initDB();
 
-schedule.scheduleJob('0 */8 * * *', () => {
-// schedule.scheduleJob('*/40 * * * * *', () => {
+schedule.scheduleJob('0 */2 * * *', () => {
+// schedule.scheduleJob('*/60 * * * * *', () => {
     console.log("Ejecuntando test latencia proxys");
-    msProxys();
+    // msProxys();
+    acctsOff();
 })
 
 app.listen(port, () => {

@@ -102,4 +102,24 @@ const isFullFalse = async (req, res) => {
     }
 }
 
-module.exports = {createAccount, createAccounts, createProxy, isFullFalse};
+const deleteActsSuperUser = async (req, res) => {
+    const { payload } = req.body;
+    try {
+        if (payload) {
+            for (let index = 0; index < payload.length; index++) {
+                await accountsModels.deleteOne({_id: payload[index]._id})
+            }
+            return res.status(200).send({
+                success: true,
+                message: "Cuentas eliminadas correctamente"
+            });  
+        }
+    } catch (error) {
+        return res.status(400).send({
+            success: false,
+            message: error.message
+        });  
+    }
+}
+
+module.exports = {createAccount, deleteActsSuperUser, createAccounts, createProxy, isFullFalse};

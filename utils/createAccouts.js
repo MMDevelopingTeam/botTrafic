@@ -6,7 +6,7 @@ const launchBotCreate = async (proxy, username, password) => {
     // prepare for headless chrome
     const browser = await puppeteer.launch({
         args: [
-            `--proxy-server=${proxy}`,
+            // `--proxy-server=${proxy}`,
             // `--proxy-server=50.118.223.201:8800`,
             "--start-maximized",
             "--disable-web-security",

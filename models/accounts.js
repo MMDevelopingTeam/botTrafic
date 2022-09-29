@@ -4,7 +4,9 @@ const AccountsSchema = new mongoose.Schema(
     {
         username: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        isUsed: { type: Boolean, default: false }
+        isUsed: { type: Boolean, default: false },
+        stricks: { type: Number, default: 0 },
+        isWorking: { type: Boolean, default: true }
     }
 )
 
