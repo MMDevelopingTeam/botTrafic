@@ -60,10 +60,14 @@ app.use("/api", require("./routes"))
 
 initDB();
 
-schedule.scheduleJob('0 */2 * * *', () => {
-// schedule.scheduleJob('*/60 * * * * *', () => {
+schedule.scheduleJob(`0 */${process.env.HORAS_TEST_PROX} * * *`, () => {
+// schedule.scheduleJob(`*/${process.env.HORAS_TEST_PROX} * * * * *`, () => {
     console.log("Ejecuntando test latencia proxys");
     msProxys();
+})
+schedule.scheduleJob(`0 */${process.env.HORAS_TEST_ACTS} * * *`, () => {
+// schedule.scheduleJob(`*/${process.env.HORAS_TEST_ACTS} * * * * *`, () => {
+    console.log("Ejecuntando test cuentas off");
     acctsOff();
 })
 
