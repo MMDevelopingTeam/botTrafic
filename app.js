@@ -63,7 +63,7 @@ initDB();
 schedule.scheduleJob('0 */2 * * *', () => {
 // schedule.scheduleJob('*/60 * * * * *', () => {
     console.log("Ejecuntando test latencia proxys");
-    // msProxys();
+    msProxys();
     acctsOff();
 })
 
