@@ -1,5 +1,6 @@
 const fs = require("fs");
 const proxysModels = require('../models/proxys');
+const IdPackProxyModels = require('../models/idPackProxy');
 const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
 const killBotsModels = require('../models/killBots');
@@ -48,17 +49,28 @@ const createProxys = async (req, res) => {
 };
 
 const createProxysString = async (req, res) => {
-  const { proxysStrings } = req.body
+  const { platformProxys, idPackageProxys, proxysStrings } = req.body
 
-  const proxys = proxysStrings.split(",")
+  const dataI = await IdPackProxyModels.findOne({id: idPackageProxys})
+  if (!dataI) {
+    return res.status(400).send({
+      success: false,
+      message: 'El paqueta no existe'
+    });
+  }
   try {
+    const proxys = proxysStrings.split('\n')
+    // return console.log(proxys.length);
     for (let index = 0; index < proxys.length; index++) {
-      const dataP = await proxysModels.findOne({proxy: proxys[index]})
+      const dataS = proxys[index].split(' ')
+      const proxyF = dataS[0].split(',')[0]
+      const dataP = await proxysModels.findOne({proxy: proxyF})
       if (dataP) {
         console.log('proxy ya existente');
       }else{
         const newProxy = new proxysModels({
-          proxy: proxys[index]
+          proxy: proxyF,
+          idPackage: dataI._id
         })
         await newProxy.save();
       }
@@ -327,4 +339,56 @@ const getStatsAdmin = async (req, res) => {
   }
 }
 
-module.exports = {createProxys, getInfoBot, createProxysString, getStatsAdmin, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
+const createIdPackProxy = async (req, res) => {
+  const { id, platform } = req.body;
+  try {
+    const dataI = await IdPackProxyModels.findOne({id})
+    if (dataI) {
+      return res.status(400).send({
+        success: false,
+        message: 'El paqueta ya existe'
+      });
+    }
+    const newIdPackProxy = new IdPackProxyModels({
+      id,
+      platform
+    })
+    await newIdPackProxy.save();
+    return res.status(200).send({
+      success: true,
+      message: 'Paqueta creado correctamente'
+    });
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
+const verifyIdPackProxy = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const dataI = await IdPackProxyModels.findOne({id})
+    if (dataI) {
+      return res.status(200).send({
+        success: true,
+        message: 'Busqueda exitosa',
+        existe: true
+      });
+    } else {
+      return res.status(200).send({
+        success: true,
+        message: 'Busqueda exitosa',
+        existe: false
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error.message
+    });
+  }
+}
+
+module.exports = {createProxys, createIdPackProxy, verifyIdPackProxy, getInfoBot, createProxysString, getStatsAdmin, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ProxysSchema = new mongoose.Schema(
+const ProxysSchema = new mongoose.Schema(   
     {
         proxy: { type: String, required: true, unique: true },
         isFull: { type: Boolean, default: false },
@@ -8,8 +8,11 @@ const ProxysSchema = new mongoose.Schema(
         Nusers: { type: Number, default: 0 },
         NusersAny: { type: Number, default: 0 },
         ms: { type: Number },
-        isDown: { type: Boolean, default: false }
+        isDown: { type: Boolean, default: false },
+        idPackage: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'IdPackProxy', autopopulate: true }
     }
 )
+
+ProxysSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('Proxys', ProxysSchema)
