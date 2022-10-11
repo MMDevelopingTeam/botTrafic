@@ -12,7 +12,7 @@ router.post("/killbots", validateStorageKillBot, createKillbots);
 router.post("/createIdPackProxy", createIdPackProxy);
 router.get("/getAcctsFree", getAcctsFree);
 router.post("/getKillBotsByModel", getKillBotsValidator, getKillBotsByModelAndRegisterBotC);
-router.get("/getproxys", cacheInit, getProxys);
+router.get("/getproxys", getProxys);
 router.get("/getproxysFree", getProxysFree);
 router.get("/getaccts", getAccts);
 router.get("/mac", mac);

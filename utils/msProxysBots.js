@@ -2,6 +2,7 @@ const axios = require('axios');
 const {testProxys} = require('./stateProxys');
 const proxysModels = require('../models/proxys');
 const accountsModels = require('../models/accounts');
+const idPackProxyModels = require('../models/idPackProxy');
 
 const msProxys = async () => {
     try {
@@ -43,4 +44,28 @@ const acctsOff = async () => {
     }
 }
 
-module.exports = {acctsOff, msProxys}
+const packsproxys = async () => {
+    try {
+        const dataA = await idPackProxyModels.find();
+        for (let index = 0; index < dataA.length; index++) {
+            var currentDateInitial = new Date();
+            var currentDateInitialD = new Date(dataA[index].dateExpirated);
+            if (Date.parse(currentDateInitialD) <= Date.parse(currentDateInitial)) {
+                let url = `http://${process.env.IPSRV}:3020/api/sockets/sendMessageForSuperUserByBot/${process.env.MI_IP}`;
+                const body = {
+                    "description": `Paquete de proxys caducado con id ${dataA[index].id} de la plataforma ${dataA[index].platform} en el bot con ip ${process.env.MI_IP}`,
+                    "paquete": dataA[index],
+                    "note": "Paquete de proxys caducado"
+                }
+                const dataSend = await axios.post(url, body)
+                if (dataSend.data) {
+                    return console.log(dataSend.data.message);
+                }
+            }
+        }
+    } catch (error) {
+        return console.log(error);
+    }
+}
+
+module.exports = {acctsOff, msProxys, packsproxys}

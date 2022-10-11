@@ -340,8 +340,16 @@ const getStatsAdmin = async (req, res) => {
 }
 
 const createIdPackProxy = async (req, res) => {
-  const { id, platform } = req.body;
+  const { id, platform, dateExpirated } = req.body;
   try {
+    var currentDateInitial = new Date();
+    var currentDateInitialD = new Date(dateExpirated);
+    if (Date.parse(currentDateInitialD) <= Date.parse(currentDateInitial)) {
+      return res.status(400).send({
+        success: false,
+        message: 'La fecha debe ser mayor a la de hoy'
+      });
+    }
     const dataI = await IdPackProxyModels.findOne({id})
     if (dataI) {
       return res.status(400).send({
@@ -351,7 +359,8 @@ const createIdPackProxy = async (req, res) => {
     }
     const newIdPackProxy = new IdPackProxyModels({
       id,
-      platform
+      platform,
+      dateExpirated: currentDateInitialD
     })
     await newIdPackProxy.save();
     return res.status(200).send({

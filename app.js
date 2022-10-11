@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const app = express()
 const axios = require('axios');
 const schedule = require('node-schedule');
-const { msProxys, acctsOff } = require("./utils/msProxysBots");
+const { msProxys, acctsOff, packsproxys } = require("./utils/msProxysBots");
 // const cache = require('express-expeditious')({
 //     namespace: 'expresscache',
 //     defaultTtl: '10 minute',
@@ -69,6 +69,10 @@ schedule.scheduleJob(`0 */${process.env.HORAS_TEST_ACTS} * * *`, () => {
 // schedule.scheduleJob(`*/${process.env.HORAS_TEST_ACTS} * * * * *`, () => {
     console.log("Ejecuntando test cuentas off");
     acctsOff();
+})
+schedule.scheduleJob(`0 */${process.env.HORAS_TEST_PACKPROXYS} * * *`, () => {
+//  schedule.scheduleJob(`*/${process.env.HORAS_TEST_PACKPROXYS} * * * * *`, () => {
+    packsproxys();
 })
 
 app.listen(port, () => {
