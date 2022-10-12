@@ -48,8 +48,61 @@ const packsproxys = async () => {
     try {
         const dataA = await idPackProxyModels.find();
         for (let index = 0; index < dataA.length; index++) {
-            var currentDateInitial = new Date();
-            var currentDateInitialD = new Date(dataA[index].dateExpirated);
+            const currentDateInitial = new Date();
+            const currentDateInitialD = new Date(dataA[index].dateExpirated);
+            const fechaExOne = new Date(dataA[index].dateExpirated);
+            const fechaExtwo = new Date(dataA[index].dateExpirated);
+            fechaExOne.setDate(fechaExOne.getDate()-1)
+            fechaExtwo.setDate(fechaExtwo.getDate()-2)
+
+            let dayHoy = currentDateInitial.getDate()
+            let mesHoy = currentDateInitial.getMonth()
+
+            let dayFalta1 = fechaExOne.getDate()
+            let mesFalta1 = fechaExOne.getMonth()
+
+            let dayFalta2 = fechaExtwo.getDate()
+            let mesFalta2 = fechaExtwo.getMonth()
+
+            let dayfechaEx = currentDateInitialD.getDate()
+            let mesfechaEx = currentDateInitialD.getMonth()
+            if (dayHoy === dayFalta1 && mesHoy === mesFalta1) {
+
+                let url = `http://${process.env.IPSRV}:3020/api/sockets/sendMessageForSuperUserByBot/${process.env.MI_IP}`;
+                const body = {
+                    "description": `Paquete de proxys con id ${dataA[index].id} de la plataforma ${dataA[index].platform} en el bot con ip ${process.env.MI_IP} caducada en 1 dia`,
+                    "paquete": dataA[index],
+                    "note": "Paquete de proxys caducado"
+                }
+                const dataSend = await axios.post(url, body)
+                if (dataSend.data) {
+                    return console.log(dataSend.data.message);
+                }
+            }
+            if (dayHoy === dayFalta2 && mesHoy === mesFalta2) {
+                let url = `http://${process.env.IPSRV}:3020/api/sockets/sendMessageForSuperUserByBot/${process.env.MI_IP}`;
+                const body = {
+                    "description": `Paquete de proxys con id ${dataA[index].id} de la plataforma ${dataA[index].platform} en el bot con ip ${process.env.MI_IP} caducada en 2 dia`,
+                    "paquete": dataA[index],
+                    "note": "Paquete de proxys caducado"
+                }
+                const dataSend = await axios.post(url, body)
+                if (dataSend.data) {
+                    return console.log(dataSend.data.message);
+                }
+            }
+            if (dayHoy === dayfechaEx && mesHoy === mesfechaEx) {
+                let url = `http://${process.env.IPSRV}:3020/api/sockets/sendMessageForSuperUserByBot/${process.env.MI_IP}`;
+                const body = {
+                    "description": `Paquete de proxys con id ${dataA[index].id} de la plataforma ${dataA[index].platform} en el bot con ip ${process.env.MI_IP} caducada hoy`,
+                    "paquete": dataA[index],
+                    "note": "Paquete de proxys caducado"
+                }
+                const dataSend = await axios.post(url, body)
+                if (dataSend.data) {
+                    return console.log(dataSend.data.message);
+                }
+            }
             if (Date.parse(currentDateInitialD) <= Date.parse(currentDateInitial)) {
                 let url = `http://${process.env.IPSRV}:3020/api/sockets/sendMessageForSuperUserByBot/${process.env.MI_IP}`;
                 const body = {
