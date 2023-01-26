@@ -37,7 +37,7 @@ const getBot = async (req, res) => {
   for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
     const dataAcct = await accountsModels.findOne({isUsed: false})
     if (!dataAcct) {
-      res.status(400).send({
+      return res.status(400).send({
         success: false,
         message: 'No hay cuentas libres'
       });
@@ -45,7 +45,7 @@ const getBot = async (req, res) => {
     }
     const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
     if (!dataProxy) {
-      res.status(400).send({
+      return res.status(400).send({
         success: false,
         message: 'No hay proxys libres'
       });
