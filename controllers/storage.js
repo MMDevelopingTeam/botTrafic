@@ -6,6 +6,7 @@ const logLaunchModels = require('../models/logLaunch');
 const killBotsModels = require('../models/killBots');
 const axios = require('axios');
 const {testProxys} = require('../utils/stateProxys');
+const { verifyBotKill } = require("../utils/launchBot");
 
 const createProxys = async (req, res) => {
   const { file } = req
@@ -194,8 +195,13 @@ const getAcctsFree = async (req, res) => {
 }
 
 const getKillBotsByModelAndRegisterBotC = async (req, res) => {
+  verifyBotKill()
+  setTimeout(() => {
+    verifyBotKill()
+  }, 1500);
   const { nameModel, id_registerBotCompany } = req.body;
   const acctsModels = await killBotsModels.find({nameModel, idRegisterCompBotContainer: id_registerBotCompany})
+  console.log(acctsModels);
   if (acctsModels) {
     return res.status(200).send({
       success: true,

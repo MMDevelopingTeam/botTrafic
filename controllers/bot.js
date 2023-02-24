@@ -1,4 +1,4 @@
-const { launchBotVDos, vDosBot, botDebug } = require("../utils/launchBot");
+const { launchBotVDos, vDosBot, botDebug, verifyBotKill } = require("../utils/launchBot");
 const killBots = require('../models/killBots');
 const accountsModels = require('../models/accounts');
 const logLaunchModels = require('../models/logLaunch');
@@ -76,7 +76,6 @@ const getBot = async (req, res) => {
 };
 
 const killBot = async (req, res) => {
-  
   const {token} = req.body
   let dataKillbot = null;
   try {
@@ -505,4 +504,8 @@ const botDebugControl = async (req, res) => {
   botDebug('166.88.111.158:8800', '12345', 'dihobula6', '12345678CuentaUsrCh', '1');
 }
 
-module.exports = {getBot, botDebugControl, killBot, getBotAny, killBotAny, getBotMixed, killBotMixed, status};
+const VerifyBotskillBot = async (req, res) => {
+  verifyBotKill()
+}
+
+module.exports = {getBot, botDebugControl, killBot, getBotAny, killBotAny, VerifyBotskillBot, getBotMixed, killBotMixed, status};

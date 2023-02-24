@@ -3,6 +3,7 @@ const fs = require('fs');
 const proxysModels = require('../models/proxys');
 const acctModels = require('../models/accounts');
 const killBots = require('../models/killBots');
+const { exec } = require('child_process');
 
 
 // const launchBotVDos = async (proxy, id, name_model, username, password, index, idRegisterCompBotContainer) => {
@@ -345,4 +346,71 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
     }
 }
 
-module.exports = {launchBotVDos, botDebug, vDosBot}
+const getD = async (pid) => {
+    const command = null;
+    if (process.platform === "win32") {
+        command = `tasklist | findstr ${pid}"`;
+    }else{
+        command = `ps -p ${pid}`;
+    }
+    const child = exec(command);    
+    child.on('close', (code) => {
+      console.log(`code: ${code}`);
+      if (code === 1) {
+        killBots.findOne({ NmrKill: pid }, async (err, data) => {
+            if (err) {
+                return console.log(err);
+            }
+            if (!data) {
+                return console.log("no se encontro el dato");
+            }else{
+                data.NmrKill = 0
+                data.save((err, data) => {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    console.log("se actualizo el dato");
+                })
+            }
+        })
+    }
+    });
+    return;
+}
+
+const verifyBotKill = async () => {
+    const data = await killBots.find()
+    for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        getD(element.NmrKill)
+    }
+    const dataS = await killBots.find({NmrKill: 0})
+    for (let i = 0; i < dataS.length; i++) {
+        const element = dataS[i];
+        if(element.type === "actsLogued"){
+            await killBots.deleteOne({_id: element._id})
+            const dataP = await proxysModels.findOne({proxy: element.proxy})
+            if (!dataP.Nusers) {
+                return;
+            }
+            dataP.Nusers--
+            if (dataP.Nusers <= 10) {
+                dataP.isFull=false
+            }
+            await dataP.save()
+        }else{
+            await killBots.deleteOne({_id: element._id})
+            const dataP = await proxysModels.findOne({proxy: element.proxy})
+            if (!dataP.NusersAny) {
+                return;
+            }
+            dataP.NusersAny--
+            if (dataP.NusersAny <= 30) {
+                dataP.isFullAny=false
+            }
+            await dataP.save()
+        }
+    }
+}
+
+module.exports = {launchBotVDos, botDebug, verifyBotKill, vDosBot}
