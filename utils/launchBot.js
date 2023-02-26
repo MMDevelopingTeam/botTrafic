@@ -364,19 +364,15 @@ const getD = async (pid) => {
             console.error(error);
         }
     }else{
-        console.log('object');
+        // console.log('object');
         command = `ps -p ${pid}`;
         try {
             // Ejecuta el comando de forma síncrona y obtiene la salida
             const std = await execSync(command);
-            const stdout = std.toString().trim();
-            let data=stdout.split(" ");
-            if (data.length === 1) {
-                // console.log("err", data);
-                await killBots.findOneAndUpdate({ NmrKill: pid }, { NmrKill: 0 });
-            }
+            console.log('find');
         } catch (error) {
-            console.error(`Error al buscar el proceso: ${error}`);
+            // console.error(`Error al buscar el proceso: ${error}`);
+            await killBots.findOneAndUpdate({NmrKill: pid }, { NmrKill: 0 });
         }
     }
 }

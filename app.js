@@ -31,7 +31,7 @@ require('dns').lookup(require('os').hostname(), function (err, add, fam) {
 
 // app.use(cache);
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.json())
+app.use(express.json({limit: '50mb'}))
 app.use(
     bodyParser.json({limit: '20mb'})
 )
