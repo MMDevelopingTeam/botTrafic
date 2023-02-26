@@ -389,7 +389,7 @@ const verifyBotKill = async () => {
         const element = dataF[i];
         const dataP = await proxysModels.findOne({proxy: element.proxy})
         if(element.type === "actsLogued"){
-            if (!dataP.Nusers) {
+            if (dataP.Nusers == 0) {
                 return;
             }
             dataP.Nusers--
@@ -398,7 +398,7 @@ const verifyBotKill = async () => {
             }
             await dataP.save()
         }else{
-            if (!dataP.NusersAny) {
+            if (dataP.NusersAny == 0) {
                 return;
             }
             dataP.NusersAny--
