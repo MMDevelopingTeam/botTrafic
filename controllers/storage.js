@@ -51,7 +51,7 @@ const createProxys = async (req, res) => {
 
 const createProxysString = async (req, res) => {
   const { platformProxys, idPackageProxys, proxysStrings } = req.body
-
+  console.log(proxysStrings);
   const dataI = await IdPackProxyModels.findOne({id: idPackageProxys})
   if (!dataI) {
     return res.status(400).send({
@@ -195,17 +195,28 @@ const getAcctsFree = async (req, res) => {
 }
 
 const getKillBotsByModelAndRegisterBotC = async (req, res) => {
-  verifyBotKill()
+  // verifyBotKill()
   // setTimeout(() => {
   //   verifyBotKill()
   // }, 1500);
   const { nameModel, id_registerBotCompany } = req.body;
   const acctsModels = await killBotsModels.find({nameModel, idRegisterCompBotContainer: id_registerBotCompany})
   if (acctsModels) {
+    let botLength = 0;
+    let botAnyLength = 0;
+    acctsModels.forEach(element => {
+      if (element.type == "actsAny") {
+        botAnyLength++;
+      }
+      if (element.type == "actsLogued") {
+        botLength++;
+      }
+    });
     return res.status(200).send({
       success: true,
       message: 'Killbots encotrados',
-      acctsModelsLength: acctsModels.length,
+      acctsModelsLength: botLength,
+      botAnyLength: botAnyLength,
       acctsModels: acctsModels
     });
   } else {
