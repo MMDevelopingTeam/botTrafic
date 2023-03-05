@@ -195,7 +195,7 @@ const getAcctsFree = async (req, res) => {
 }
 
 const getKillBotsByModelAndRegisterBotC = async (req, res) => {
-  // verifyBotKill()
+  verifyBotKill()
   // setTimeout(() => {
   //   verifyBotKill()
   // }, 1500);
