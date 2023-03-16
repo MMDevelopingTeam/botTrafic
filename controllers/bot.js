@@ -97,22 +97,11 @@ const killBot = async (req, res) => {
     });
   }
 
-  function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 1; i < 1e7; i++) { 
-      console.log(new Date().getTime() - start);
-      if ((new Date().getTime() - start) > milliseconds) {
-       break;
-      }
-    }
-   }
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
    
-   function demo() {
-     sleep(200);
-   }
-   
-   
-  console.clear()
+  // console.clear()
   const dataKills = await killBots.find({nameModel: dataKillbot.nameModel});
   if (dataKills.length === 0) {
    return res.status(400).send({
@@ -120,39 +109,61 @@ const killBot = async (req, res) => {
      message: 'kills no encontrados'
    });
   }
+
+  async function main() {
+    console.log('Inicio');
   
-  for (let index = 0; index < dataKillbot.nBots; index++) {
-    const dataAcct = await accountsModels.findOne({_id: dataKills[index].acct_id});
-    if (!dataAcct) {
-      console.log("cuenta no encotrada");
-      break;
+    for (let i = 0; i < dataKillbot.nBots; i++) {
+      console.log(`Iteración ${i}`);
+
+      try {
+        process.kill(dataKills[i].NmrKill);
+  
+  
+        const dataAcct = await accountsModels.findOne({_id: dataKills[i].acct_id});
+        if (!dataAcct) {
+          console.log("cuenta no encotrada");
+          break;
+        }
+        dataAcct.isUsed=false;
+        await dataAcct.save();
+  
+        const dataProxy = await proxysModels.findOne({proxy: dataKills[i].proxy})
+        if (!dataProxy) {
+          break;
+        }
+        if (dataProxy.Nusers < 10) {
+          dataProxy.isFull=false
+        }
+        dataProxy.Nusers--
+        await dataProxy.save();
+  
+        await killBots.deleteOne({_id: dataKills[i]._id});
+        
+      } catch (error) {
+        throw new Error('Error al matar bots');
+      }
+
+
+      await sleep(2000);
     }
-    dataAcct.isUsed=false;
-    await dataAcct.save();
-    const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
-    if (!dataProxy) {
-      break;
-    }
-    if (dataProxy.Nusers < 10) {
-      dataProxy.isFull=false
-    }
-    dataProxy.Nusers--
-    await dataProxy.save();
-    await killBots.deleteOne({_id: dataKills[index]._id});
-    try {
-      demo();
-      process.kill(dataKills[index].NmrKill);
-      console.log("kill bot");
-    } catch (error) {
-      console.log(error.message);
-    }
+  
+    console.log('Fin');
   }
-  console.clear()
-  console.log("killbots eliminados")
-  return res.status(200).send({
+
+  main().then(() => {
+    return res.status(200).send({
       success: true,
       message: 'bot killer'
+    });
+  })
+  .catch((err) => {
+    return res.status(400).send({
+      success: false,
+      message: err.message
+    });
   });
+
 };
 
 const getBotAny = async (req, res) => {
@@ -234,22 +245,10 @@ const killBotAny = async (req, res) => {
     });
   }
 
-  function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 1; i < 1e7; i++) { 
-      console.log(new Date().getTime() - start);
-      if ((new Date().getTime() - start) > milliseconds) {
-       break;
-      }
-    }
-   }
-   
-   function demo() {
-     sleep(200);
-   }
-   
-   
-  console.clear()
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   const dataKills = await killBots.find({nameModel: dataKillbot.nameModel, idRegisterCompBotContainer: dataKillbot.idRegisterCompBotContainer});
   if (dataKills.length === 0) {
    return res.status(400).send({
@@ -257,31 +256,49 @@ const killBotAny = async (req, res) => {
      message: 'kills no encontrados'
    });
   }
+
+
+  async function main() {
+    console.log('Inicio');
   
-  for (let index = 0; index < dataKillbot.nBots; index++) {
-    try {
-      const dataProxy = await proxysModels.findOne({proxy: dataKills[index].proxy})
-      if (!dataProxy) {
-        break;
+    for (let i = 0; i < dataKillbot.nBots; i++) {
+      console.log(`Iteración ${i}`);
+
+      try {
+        
+        process.kill(dataKills[i].NmrKill);
+
+        const dataProxy = await proxysModels.findOne({proxy: dataKills[i].proxy})
+        if (!dataProxy) {
+          break;
+        }
+        if (dataProxy.NusersAny < 30) {
+          dataProxy.isFullAny=false
+        }
+        dataProxy.NusersAny--
+        await dataProxy.save();
+        await killBots.deleteOne({_id: dataKills[i]._id});
+      } catch (error) {
+        throw new Error('Error al matar bots');
       }
-      if (dataProxy.NusersAny < 30) {
-        dataProxy.isFullAny=false
-      }
-      dataProxy.NusersAny--
-      await dataProxy.save();
-      await killBots.deleteOne({_id: dataKills[index]._id});
-      demo();
-      process.kill(dataKills[index].NmrKill);
-      console.log("kill bot");
-    } catch (error) {
-      console.log(error.message);
+
+      await sleep(2000);
     }
+  
+    console.log('Fin');
   }
-  console.clear()
-  console.log("killbots eliminados")
-  return res.status(200).send({
+  
+  main().then(() => {
+    return res.status(200).send({
       success: true,
       message: 'bot killer'
+    });
+  })
+  .catch((err) => {
+    return res.status(400).send({
+      success: false,
+      message: err.message
+    });
   });
 };
 
