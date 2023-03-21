@@ -196,9 +196,6 @@ const getAcctsFree = async (req, res) => {
 
 const getKillBotsByModelAndRegisterBotC = async (req, res) => {
   verifyBotKill()
-  // setTimeout(() => {
-  //   verifyBotKill()
-  // }, 1500);
   const { nameModel, id_registerBotCompany } = req.body;
   const acctsModels = await killBotsModels.find({nameModel, idRegisterCompBotContainer: id_registerBotCompany})
   if (acctsModels) {
