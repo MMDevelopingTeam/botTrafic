@@ -102,7 +102,7 @@ const killBot = async (req, res) => {
   }
    
   // console.clear()
-  const dataKills = await killBots.find({nameModel: dataKillbot.nameModel});
+  const dataKills = await killBots.find({nameModel: dataKillbot.nameModel, type: "actsLogued"});
   if (dataKills.length === 0) {
    return res.status(400).send({
      success: false,
@@ -119,27 +119,25 @@ const killBot = async (req, res) => {
       try {
         process.kill(dataKills[i].NmrKill);
   
-  
         const dataAcct = await accountsModels.findOne({_id: dataKills[i].acct_id});
-        if (!dataAcct) {
+        if (dataAcct) {
+          dataAcct.isUsed=false;
+          await dataAcct.save();
+        } else {
           console.log("cuenta no encotrada");
-          break;
         }
-        dataAcct.isUsed=false;
-        await dataAcct.save();
-  
+
         const dataProxy = await proxysModels.findOne({proxy: dataKills[i].proxy})
-        if (!dataProxy) {
-          break;
+        if (dataProxy) {
+          if (dataProxy.Nusers < 10) {
+            dataProxy.isFull=false
+          }
+          dataProxy.Nusers--
+          await dataProxy.save();
+        } else {
+          console.log("proxy no encontrado");
         }
-        if (dataProxy.Nusers < 10) {
-          dataProxy.isFull=false
-        }
-        dataProxy.Nusers--
-        await dataProxy.save();
-  
         await killBots.deleteOne({_id: dataKills[i]._id});
-        
       } catch (error) {
         throw new Error('Error al matar bots');
       }
@@ -249,7 +247,7 @@ const killBotAny = async (req, res) => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  const dataKills = await killBots.find({nameModel: dataKillbot.nameModel, idRegisterCompBotContainer: dataKillbot.idRegisterCompBotContainer});
+  const dataKills = await killBots.find({nameModel: dataKillbot.nameModel, type: "actsAny", idRegisterCompBotContainer: dataKillbot.idRegisterCompBotContainer});
   if (dataKills.length === 0) {
    return res.status(400).send({
      success: false,
