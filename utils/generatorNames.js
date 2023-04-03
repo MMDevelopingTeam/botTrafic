@@ -18,7 +18,7 @@ const generatorNames = async () => {
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
-            headless: true
+            headless: false
         });
         const page = (await browser.pages())[0];
         await page.setViewport({

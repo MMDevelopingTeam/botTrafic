@@ -6,7 +6,9 @@ const AccountsSchema = new mongoose.Schema(
         password: { type: String, required: true },
         isUsed: { type: Boolean, default: false },
         stricks: { type: Number, default: 0 },
-        isWorking: { type: Boolean, default: true }
+        isWorking: { type: Boolean, default: true },
+        arrayModelsFollowers: { type: Array, default: [] },
+        nFolloers: { type: Number, default: 0 },
     }
 )
 

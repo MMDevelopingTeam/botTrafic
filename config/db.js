@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DB_URL =  `mongodb://localhost:27017/botTraficDataBase`
+const DB_URL =  `mongodb://0.0.0.0:27017/botTraficDataBase`
 
 module.exports = () => {
     const connect = () => {
@@ -13,7 +13,7 @@ module.exports = () => {
             },
             (err) => {
                 if (err) {
-                    console.log("error en DB");
+                    console.log("error en DB", err);
                 }else{
                     console.log("DB conectada correctamente")
                 }

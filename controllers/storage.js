@@ -200,6 +200,7 @@ const getKillBotsByModelAndRegisterBotC = async (req, res) => {
   const acctsModels = await killBotsModels.find({nameModel, idRegisterCompBotContainer: id_registerBotCompany})
   if (acctsModels) {
     let botLength = 0;
+    let botLengthFollow = 0;
     let botAnyLength = 0;
     acctsModels.forEach(element => {
       if (element.type == "actsAny") {
@@ -208,12 +209,16 @@ const getKillBotsByModelAndRegisterBotC = async (req, res) => {
       if (element.type == "actsLogued") {
         botLength++;
       }
+      if (element.type == "actsLoguedAndFollow") {
+        botLengthFollow++;
+      }
     });
     return res.status(200).send({
       success: true,
       message: 'Killbots encotrados',
       acctsModelsLength: botLength,
-      botAnyLength: botAnyLength,
+      botAnyLength,
+      botLengthFollow,
       acctsModels: acctsModels
     });
   } else {
