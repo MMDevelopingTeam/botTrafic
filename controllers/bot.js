@@ -82,13 +82,18 @@ const getBot = async (req, res) => {
     console.log('Fin');
   }
 
-  main().catch((err) => {
-    console.log(err);
-  });
-
-  return res.status(200).send({
+  main()
+  .then(() => {
+    return res.status(200).send({
       success: true,
       message: 'bot corriendo'
+  });
+  })
+  .catch((err) => {
+    return res.status(400).send({
+      success: false,
+      message: err.message
+    });
   });
 };
 
