@@ -43,7 +43,7 @@ const getBot = async (req, res) => {
     await newLog.save();
     console.log("log registrado");
   
-    for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
+    for (let indexAcc; indexAcc < dataLaunch.nBots; indexAcc++) {
       const dataAcct = await accountsModels.findOne({isUsed: false})
       if (!dataAcct) {
         return res.status(400).send({
@@ -82,13 +82,18 @@ const getBot = async (req, res) => {
     console.log('Fin');
   }
 
-  main().catch((err) => {
-    console.log(err);
-  });
-
-  return res.status(200).send({
+  main().then(() => {
+    return res.status(200).send({
       success: true,
       message: 'bot corriendo'
+  });
+  })
+  .catch((err) => {
+    console.log(err);
+    return res.status(400).send({
+      success: false,
+      message: 'Error al correr los bots'
+    });
   });
 };
 
