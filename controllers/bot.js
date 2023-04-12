@@ -43,7 +43,7 @@ const getBot = async (req, res) => {
     await newLog.save();
     console.log("log registrado");
   
-    for (let indexAcc; indexAcc < dataLaunch.nBots; indexAcc++) {
+    for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
       const dataAcct = await accountsModels.findOne({isUsed: false})
       if (!dataAcct) {
         return res.status(400).send({
