@@ -11,7 +11,15 @@ var currentDate = new Date();
 const getBot = async (req, res) => {
   const {token} = req.body
   let dataLaunch = null;
-  jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function main() {
+    console.log('Inicio');
+
+    jwt.verify(token, process.env.KEY_JWT, (err, authData) => {
       if (err) {
           return res.status(403).send({
               success: false,
@@ -23,52 +31,60 @@ const getBot = async (req, res) => {
       }
   })
 
-  const newLog = new logLaunchModels({
-    date: currentDate,
-    name_model: dataLaunch.nameModel,
-    userId: dataLaunch.userId,
-    companyId: dataLaunch.company,
-    numberBots: dataLaunch.nBots,
-    registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer,
-    typeBot: dataLaunch.typeBot
-  })
-  await newLog.save();
-  console.log("log registrado");
-
-  for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
-    const dataAcct = await accountsModels.findOne({isUsed: false})
-    if (!dataAcct) {
-      return res.status(400).send({
-        success: false,
-        message: 'No hay cuentas libres'
-      });
-      break;
-    }
-    const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
-    if (!dataProxy) {
-      return res.status(400).send({
-        success: false,
-        message: 'No hay proxys libres'
-      });
-      break;
-    }
-    dataProxy.Nusers++
-    if (dataProxy.Nusers === 10) {
-      dataProxy.isFull = true
-    }
-    await dataProxy.save();
-    if (dataProxy && dataProxy.isDown === false) {
-      setTimeout(() => {
-        // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
-        // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, name_model)
+    const newLog = new logLaunchModels({
+      date: currentDate,
+      name_model: dataLaunch.nameModel,
+      userId: dataLaunch.userId,
+      companyId: dataLaunch.company,
+      numberBots: dataLaunch.nBots,
+      registerCompanyBotContainer: dataLaunch.idRegisterCompBotContainer,
+      typeBot: dataLaunch.typeBot
+    })
+    await newLog.save();
+    console.log("log registrado");
+  
+    for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
+      const dataAcct = await accountsModels.findOne({isUsed: false})
+      if (!dataAcct) {
+        return res.status(400).send({
+          success: false,
+          message: 'No hay cuentas libres'
+        });
+        break;
+      }
+      const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
+      if (!dataProxy) {
+        return res.status(400).send({
+          success: false,
+          message: 'No hay proxys libres'
+        });
+        break;
+      }
+      dataProxy.Nusers++
+      if (dataProxy.Nusers === 10) {
+        dataProxy.isFull = true
+      }
+      await dataProxy.save();
+      if (dataProxy && dataProxy.isDown === false) {
+        // setTimeout(() => {
+        //   launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer)
+        // }, 15000*indexAcc);
         launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer)
-      }, 15000*indexAcc);
-    } else{
-      break;
+      } else{
+        break;
+      }
+      dataAcct.isUsed = true
+      await dataAcct.save();
+
+      await sleep(10000);
+
     }
-    dataAcct.isUsed = true
-    await dataAcct.save();
+    console.log('Fin');
   }
+
+  main().catch((err) => {
+    console.log(err);
+  });
 
   return res.status(200).send({
       success: true,
