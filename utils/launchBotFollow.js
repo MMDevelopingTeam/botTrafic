@@ -9,6 +9,7 @@ const launchBotsFollow = async (proxy, id, name_model, username, password, index
     try {
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
+            ignoreDefaultArgs: ['--disable-extensions'],
             args: [
                 // `--proxy-server=${proxy}`,
                 "--start-maximized",
@@ -22,6 +23,9 @@ const launchBotsFollow = async (proxy, id, name_model, username, password, index
                 "--allow-running-insecure-content",
                 "--no-default-browser-check",
                 "--no-first-run",
+                '--disable-dev-shm-usage',
+                '--no-zygote',
+                '--single-process',
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
@@ -60,6 +64,7 @@ const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
     try {
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
+            ignoreDefaultArgs: ['--disable-extensions'],
             args: [
                 `--proxy-server=${proxy}`,
                 // `--proxy-server=138.128.119.188:8800`,
@@ -74,6 +79,9 @@ const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
                 "--allow-running-insecure-content",
                 "--no-default-browser-check",
                 "--no-first-run",
+                '--disable-dev-shm-usage',
+                '--no-zygote',
+                '--single-process',
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
@@ -118,6 +126,7 @@ const botDebug = async (proxy, name_model, username, password, index) => {
     try {
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
+            ignoreDefaultArgs: ['--disable-extensions'],
             args: [
                 // `--proxy-server=${proxy}`,
                 "--start-maximized",
@@ -131,6 +140,9 @@ const botDebug = async (proxy, name_model, username, password, index) => {
                 "--allow-running-insecure-content",
                 "--no-default-browser-check",
                 "--no-first-run",
+                '--disable-dev-shm-usage',
+                '--no-zygote',
+                '--single-process',
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
