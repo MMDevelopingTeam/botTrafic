@@ -11,7 +11,6 @@ const { execSync } = require('child_process');
     
 //     process.setMaxListeners(Infinity);
 //     const browser = await puppeteer.launch({
-//         ignoreDefaultArgs: ['--disable-extensions'],l
 //         args: [
 //             `--proxy-server=${proxy}`,
 //             "--start-maximized",
@@ -20,15 +19,11 @@ const { execSync } = require('child_process');
 //             "--disable-notifications",
 //             "--ignore-certificate-errors",
 //             "--no-sandbox",
-//             "--disabled-setupid-sandbox",
 //             "--disable-gpu",
 //             "--log-level=3",
 //             "--allow-running-insecure-content",
 //             "--no-default-browser-check",
 //             "--no-first-run",
-            // '--disable-dev-shm-usage',
-            // '--no-zygote',
-            // '--single-process',
 //             "--disable-blink-features=AutomationControlled",
 //             "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
 //         ],
@@ -116,7 +111,6 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
     try {
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
-            ignoreDefaultArgs: ['--disable-extensions'],
             args: [
                 `--proxy-server=${proxy}`,
                 "--start-maximized",
@@ -125,15 +119,11 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
                 "--disable-notifications",
                 "--ignore-certificate-errors",
                 "--no-sandbox",
-                "--disabled-setupid-sandbox",
                 "--disable-gpu",
                 "--log-level=3",
                 "--allow-running-insecure-content",
                 "--no-default-browser-check",
                 "--no-first-run",
-                '--disable-dev-shm-usage',
-                '--no-zygote',
-                '--single-process',
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
@@ -172,7 +162,6 @@ const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
     try {
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
-            ignoreDefaultArgs: ['--disable-extensions'],
             args: [
                 `--proxy-server=${proxy}`,
                 // `--proxy-server=138.128.119.188:8800`,
@@ -182,15 +171,11 @@ const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
                 "--disable-notifications",
                 "--ignore-certificate-errors",
                 "--no-sandbox",
-                "--disabled-setupid-sandbox",
                 "--disable-gpu",
                 "--log-level=3",
                 "--allow-running-insecure-content",
                 "--no-default-browser-check",
                 "--no-first-run",
-                '--disable-dev-shm-usage',
-                '--no-zygote',
-                '--single-process',
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
@@ -235,7 +220,6 @@ const botDebug = async (proxy, name_model, username, password, index) => {
     try {
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
-            ignoreDefaultArgs: ['--disable-extensions'],
             args: [
                 `--proxy-server=${proxy}`,
                 "--start-maximized",
@@ -244,20 +228,15 @@ const botDebug = async (proxy, name_model, username, password, index) => {
                 "--disable-notifications",
                 "--ignore-certificate-errors",
                 "--no-sandbox",
-                "--disabled-setupid-sandbox",
                 "--disable-gpu",
                 "--log-level=3",
                 "--allow-running-insecure-content",
                 "--no-default-browser-check",
                 "--no-first-run",
-                '--disable-dev-shm-usage',
-                '--no-zygote',
-                '--single-process',
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
-            headless: false,
-            userDataDir: `./data/${name_model}`
+            headless: false
         })
         const browserPID = browser.process().pid
         // const newIdKBot = new killBots({
