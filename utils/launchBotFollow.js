@@ -10,7 +10,7 @@ const launchBotsFollow = async (proxy, id, name_model, username, password, index
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
             args: [
-                // `--proxy-server=${proxy}`,
+                `--proxy-server=${proxy}`,
                 "--start-maximized",
                 "--disable-web-security",
                 "--disable-extensions",
@@ -216,9 +216,30 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
             return;
         }
         if (isFollow === true) {
+            console.log('No la sigue');
             open_tabTres('https://chaturbate.com/', browser, name_model, id)
         }else{
-            await page.goto(`https://chaturbate.com/${name_model}`);
+            console.log('Ya la sigue');
+            await page.waitForTimeout(2000)
+            const followed_counts = await page.$('.followed_counts')
+            await followed_counts.click()
+            await page.waitForTimeout(2000)
+            const roomElementAnchor = await page.$$('.roomElementAnchor')
+            try {                
+                for (let i = 0; i < roomElementAnchor.length; i++) {
+                    const element = roomElementAnchor[i];
+                    const text = await element.$eval('span', el => el.textContent);
+                    if (text === name_model) {
+                        await element.click()
+                        await page.waitForTimeout(2000)
+                        return;
+                    }else{
+                        console.log("no encontro el modelo");
+                    }
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
         }
         // await page.goto(`https://chaturbate.com/${name_model}`);
     } catch (error) {
@@ -236,19 +257,28 @@ async function open_tabTres( url , browser, urlModel, id){
         await page.waitForTimeout(5000)
         await page.goto(`https://chaturbate.com/${urlModel}`);
         await page.waitForTimeout(5000)
-        const followButton = await page.$('.followButton')
-        await followButton.click()
-        let data = await acctModels.findOne({_id: id})
-        data.arrayModelsFollowers = data.arrayModelsFollowers.concat(urlModel)
-        data.nFolloers++
-        await data.save();
-        await page.waitForTimeout(5000)
-        // hacer scroll hasta arriba de la pagina
-        await page.evaluate(() => {
-            window.scrollTo(0, 0);
+        
+        let hasClass = await page.evaluate(() => {
+            let followButton = document.querySelector('.followButton')
+            let hasClass = followButton.classList.contains('display: none')
+            return hasClass
         });
-        await page.waitForTimeout(5000)
-        return;
+        if (hasClass === true) {
+            console.log('Ya la sigue');
+            return;
+        }else{
+            const followButtonSig = await page.$('.followButton')
+            await followButtonSig.click()
+            let data = await acctModels.findOne({_id: id})
+            data.arrayModelsFollowers = data.arrayModelsFollowers.concat(urlModel)
+            data.nFolloers++
+            await data.save();
+            await page.waitForTimeout(5000)
+            await page.evaluate(() => {
+                window.scrollTo(0, 0);
+            });
+            await page.waitForTimeout(5000)
+        }
     } catch (error) {
         console.log(error.message);
     }
