@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getBot, killBot, getBotAny, status, killBotAny, getBotMixed, killBotMixed, botDebugControl, VerifyBotskillBot, BotFollowers, killBotFollowers } = require("../controllers/bot");
+const { getBot, killBot, getBotAny, status, killBotAny, getBotMixed, killBotMixed, botDebugControl, VerifyBotskillBot, BotFollowers, killBotFollowers, BotColor, killBotColor } = require("../controllers/bot");
 const { botDebug } = require("../utils/launchBot");
 const { validateBot } = require("../validators/bot");
 
@@ -22,5 +22,14 @@ router.get("/", status)
 
 router.post("/BotFollowers", validateBot, BotFollowers)
 router.post("/killBotFollowers", validateBot, killBotFollowers)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////// bot color //////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+router.post("/BotColor", validateBot, BotColor)
+router.post("/killBotColor", validateBot, killBotColor)
 
 module.exports = router
