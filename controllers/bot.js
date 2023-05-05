@@ -4,6 +4,7 @@ const accountsModels = require('../models/accounts');
 const accountsColorModels = require('../models/accountsColor');
 const logLaunchModels = require('../models/logLaunch');
 const proxysModels = require('../models/proxys');
+const proxysColorModels = require('../models/proxysColor');
 const jwt = require('jsonwebtoken');
 const { launchBotsFollow } = require("../utils/launchBotFollow");
 const { launchBotColor } = require("../utils/launchBotColor");
@@ -771,19 +772,13 @@ const BotColor = async (req, res) => {
       isFollow = true
     }
     
-    const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
+    const dataProxy = await proxysColorModels.findOne({isFull: false}).sort({ms: 1})
     if (!dataProxy) {
       return res.status(400).send({
         success: false,
         message: 'No hay proxys libres'
       });
-      break;
     }
-    dataProxy.Nusers++
-    if (dataProxy.Nusers === 10) {
-      dataProxy.isFull = true
-    }
-    await dataProxy.save();
     if (dataProxy && dataProxy.isDown === false) {
       setTimeout(() => {
         launchBotColor(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
@@ -791,6 +786,8 @@ const BotColor = async (req, res) => {
     } else{
       break;
     }
+    dataProxy.isFull = true
+    await dataProxy.save();
     dataAcct.isUsed = true
     await dataAcct.save();
   }
@@ -854,12 +851,9 @@ const killBotColor = async (req, res) => {
           console.log("cuenta no encotrada");
         }
 
-        const dataProxy = await proxysModels.findOne({proxy: dataKills[i].proxy})
+        const dataProxy = await proxysColorModels.findOne({proxy: dataKills[i].proxy})
         if (dataProxy) {
-          if (dataProxy.Nusers < 10) {
-            dataProxy.isFull=false
-          }
-          dataProxy.Nusers--
+          dataProxy.isFull=false
           await dataProxy.save();
         } else {
           console.log("proxy no encontrado");

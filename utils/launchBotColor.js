@@ -10,7 +10,7 @@ const launchBotColor = async (proxy, id, name_model, username, password, index, 
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
             args: [
-                `--proxy-server=${proxy}`,
+                // `--proxy-server=${proxy}`,
                 "--start-maximized",
                 "--disable-web-security",
                 "--disable-extensions",

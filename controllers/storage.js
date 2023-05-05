@@ -1,7 +1,9 @@
 const fs = require("fs");
 const proxysModels = require('../models/proxys');
+const proxysColorModels = require('../models/proxysColor');
 const IdPackProxyModels = require('../models/idPackProxy');
 const accountsModels = require('../models/accounts');
+const accountsColorModels = require('../models/accountsColor');
 const logLaunchModels = require('../models/logLaunch');
 const killBotsModels = require('../models/killBots');
 const axios = require('axios');
@@ -86,7 +88,45 @@ const createProxysString = async (req, res) => {
         message: error.message
     });
   }
+};
 
+const createProxysColorString = async (req, res) => {
+  const { platformProxys, idPackageProxys, proxysStrings } = req.body
+  console.log(proxysStrings);
+  const dataI = await IdPackProxyModels.findOne({id: idPackageProxys})
+  if (!dataI) {
+    return res.status(400).send({
+      success: false,
+      message: 'El paqueta no existe'
+    });
+  }
+  try {
+    const proxys = proxysStrings.split('\n')
+    // return console.log(proxys.length);
+    for (let index = 0; index < proxys.length; index++) {
+      const dataS = proxys[index].split(' ')
+      const proxyF = dataS[0].split(',')[0]
+      const dataP = await proxysColorModels.findOne({proxy: proxyF})
+      if (dataP) {
+        console.log('proxy ya existente');
+      }else{
+        const newProxy = new proxysColorModels({
+          proxy: proxyF,
+          idPackage: dataI._id
+        })
+        await newProxy.save();
+      }
+    }
+    return res.status(200).send({
+        success: true,
+        message: 'data guardada en base de datos'
+    });
+  } catch (error) {
+    return res.status(400).send({
+        success: false,
+        message: error.message
+    });
+  }
 };
 
 const createAcct = async (req, res) => {
@@ -130,6 +170,23 @@ const createAcct = async (req, res) => {
 
 const getProxys = async (req, res) => {
   const prsModels = await proxysModels.find().sort({ms: 1})
+  if (prsModels) {
+    return res.status(200).send({
+      success: true,
+      message: 'proxys encontrados',
+      prsModelsLength: prsModels.length,
+      prsModels
+    });
+  } else {
+    return res.status(400).send({
+      success: false,
+      message: 'Error encontrando proxys'
+    });
+  }
+}
+
+const getProxysColor = async (req, res) => {
+  const prsModels = await proxysColorModels.find().sort({ms: 1})
   if (prsModels) {
     return res.status(200).send({
       success: true,
@@ -202,6 +259,7 @@ const getKillBotsByModelAndRegisterBotC = async (req, res) => {
     let botLength = 0;
     let botLengthFollow = 0;
     let botAnyLength = 0;
+    let botColorsLength = 0;
     acctsModels.forEach(element => {
       if (element.type == "actsAny") {
         botAnyLength++;
@@ -212,12 +270,16 @@ const getKillBotsByModelAndRegisterBotC = async (req, res) => {
       if (element.type == "actsLoguedAndFollow") {
         botLengthFollow++;
       }
+      if (element.type == "actsLoguedColor") {
+        botColorsLength++;
+      }
     });
     return res.status(200).send({
       success: true,
       message: 'Killbots encotrados',
       acctsModelsLength: botLength,
       botAnyLength,
+      botColorsLength,
       botLengthFollow,
       acctsModels: acctsModels
     });
@@ -251,6 +313,13 @@ const reset = async (req, res) => {
       message: 'Proxys no encontrados'
     });
   }
+  const dataProxysColor = await proxysColorModels.find()
+  if (!dataProxysColor) {
+    return res.status(400).send({
+      success: false,
+      message: 'Proxys de color no encontrados'
+    });
+  }
   const dataActs = await accountsModels.find()
   if (!dataActs) {
     return res.status(400).send({
@@ -258,17 +327,36 @@ const reset = async (req, res) => {
       message: 'Cuentas no encontradas'
     });
   }
+  const dataActsColor = await accountsColorModels.find()
+  if (!dataActsColor) {
+    return res.status(400).send({
+      success: false,
+      message: 'Cuentas de color no encontradas'
+    });
+  }
   try {
     for (let indexUno = 0; indexUno < dataProxys.length; indexUno++) {
       const dataProxy = await proxysModels.findOne({_id: dataProxys[indexUno]._id})
       dataProxy.isFull=false
       dataProxy.isFullAny=false
+      dataProxy.isDown=false
       dataProxy.Nusers=0
       dataProxy.NusersAny=0
       await dataProxy.save()
     }
+    for (let indexUno = 0; indexUno < dataProxysColor.length; indexUno++) {
+      const dataProxy = await proxysColorModels.findOne({_id: dataProxysColor[indexUno]._id})
+      dataProxy.isFull=false
+      dataProxy.isDown=false
+      await dataProxy.save()
+    }
     for (let indexDos = 0; indexDos < dataActs.length; indexDos++) {
       const dataAct = await accountsModels.findOne({_id: dataActs[indexDos]._id})
+      dataAct.isUsed=false
+      await dataAct.save()
+    }
+    for (let indexDos = 0; indexDos < dataActsColor.length; indexDos++) {
+      const dataAct = await accountsColorModels.findOne({_id: dataActsColor[indexDos]._id})
       dataAct.isUsed=false
       await dataAct.save()
     }
@@ -418,4 +506,4 @@ const verifyIdPackProxy = async (req, res) => {
   }
 }
 
-module.exports = {createProxys, createIdPackProxy, verifyIdPackProxy, getInfoBot, createProxysString, getStatsAdmin, msProxys, mac, createAcct, getProxys, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
+module.exports = {createProxys, createIdPackProxy, verifyIdPackProxy, getInfoBot, createProxysString, createProxysColorString, getStatsAdmin, msProxys, mac, createAcct, getProxys, getProxysColor, reset, getProxysFree, getAccts, createKillbots, getAcctsFree, getKillBotsByModelAndRegisterBotC};
