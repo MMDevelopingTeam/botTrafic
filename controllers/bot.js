@@ -86,17 +86,15 @@ const getBot = async (req, res) => {
   }
 
   main()
-  .then(() => {
-    return res.status(200).send({
-      success: true,
-      message: 'bot corriendo'
-  });
-  })
   .catch((err) => {
     return res.status(400).send({
       success: false,
       message: err.message
     });
+  });
+  return res.status(200).send({
+    success: true,
+    message: 'bot corriendo'
   });
 };
 
@@ -168,7 +166,7 @@ const killBot = async (req, res) => {
       }
 
 
-      await sleep(2000);
+      await sleep(1500);
     }
   
     console.log('Fin');
