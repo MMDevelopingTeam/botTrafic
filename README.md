@@ -22,3 +22,7 @@ IPSRV=XXX.XXX.XXX.XXX
 ## Versions
 
 nodejs: 14.18.3
+
+## activar o desactivar proxy
+
+linea 13 en botTrafic\utils\launchBotColor.js

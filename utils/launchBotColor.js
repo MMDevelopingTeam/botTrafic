@@ -112,10 +112,10 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
         await page.setViewport({width: 1200, height: 1000});
         await page.goto( url );
         ///////////////////////////////////////////////////////////
-        await page.waitForTimeout(8000)
+        await page.waitForTimeout(3000)
         await page.keyboard.type(username)
         await page.keyboard.press('Tab')
-        await page.waitForTimeout(8000)
+        await page.waitForTimeout(3000)
         await page.keyboard.type(password)
         await page.waitForTimeout(2000)
         await page.keyboard.press('Tab')
@@ -123,7 +123,7 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
         await page.keyboard.press('Tab')
         await page.waitForTimeout(2000)
         await page.keyboard.press('Enter')
-        await page.waitForTimeout(8000)
+        await page.waitForTimeout(3000)
         await page.goto(`https://chaturbate.com/tipping/free_tokens/`);
         await page.waitForTimeout(2000)
         if (await page.url() === 'https://chaturbate.com/auth/login/?next=/tipping/free_tokens/') {
@@ -163,6 +163,16 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
                         console.log("no encontro el modelo");
                     }
                 }
+                await page.waitForTimeout(3000)
+                await page.click('#VideoPanel > div:nth-child(3) > div > div > span')
+                await page.waitForTimeout(2000)
+                await page.type('.tipAmountInput', '1')
+                await page.waitForTimeout(2000)
+                await page.type('.tipMessageInput', 'hola')
+                await page.waitForTimeout(2000)
+                // await page.click('#SplitModeTipCallout > form > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)')
+                await page.waitForTimeout(2000)
+
             } catch (error) {
                 console.log(error.message);
             }
@@ -191,6 +201,16 @@ async function open_tabTres( url , browser, urlModel, id){
         });
         if (hasClass === true) {
             console.log('Ya la sigue');
+                await page.waitForTimeout(3000)
+                await page.waitForTimeout(3000)
+                await page.click('#VideoPanel > div:nth-child(3) > div > div > span')
+                await page.waitForTimeout(2000)
+                await page.type('.tipAmountInput', '1')
+                await page.waitForTimeout(2000)
+                await page.type('.tipMessageInput', 'hola')
+                await page.waitForTimeout(2000)
+                // await page.click('#SplitModeTipCallout > form > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)')
+                await page.waitForTimeout(2000)
             return;
         }else{
             const followButtonSig = await page.$('.followButton')
@@ -203,7 +223,16 @@ async function open_tabTres( url , browser, urlModel, id){
             await page.evaluate(() => {
                 window.scrollTo(0, 0);
             });
-            await page.waitForTimeout(5000)
+            // await page.waitForTimeout(5000)
+            await page.waitForTimeout(3000)
+            await page.click('#VideoPanel > div:nth-child(3) > div > div > span')
+            await page.waitForTimeout(2000)
+            await page.type('.tipAmountInput', '1')
+            await page.waitForTimeout(2000)
+            await page.type('.tipMessageInput', 'hola')
+            await page.waitForTimeout(2000)
+            // await page.click('#SplitModeTipCallout > form > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)')
+            await page.waitForTimeout(2000)
         }
     } catch (error) {
         console.log(error.message);
