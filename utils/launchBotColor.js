@@ -45,7 +45,7 @@ const launchBotColor = async (proxy, id, name_model, username, password, index, 
         await page.setCookie(...deserializedCookies);
         /////////////////////////////////////////////////////////////////////////////
         await open_tab('https://chaturbate.com/' , browser);
-        await page.waitForTimeout(20000)
+        await page.waitForTimeout(5000)
         await open_tabDos('https://chaturbate.com/auth/login/' , browser, proxy, name_model, username, password, index, isFollow, id);
         await page.close();
         let pageDos = (await browser.pages())[0];
@@ -158,19 +158,20 @@ async function open_tabDos( url , browser, proxy, name_model, username, password
                     if (text === name_model) {
                         await element.click()
                         await page.waitForTimeout(2000)
-                        return;
+                        break;
                     }else{
                         console.log("no encontro el modelo");
                     }
                 }
-                await page.waitForTimeout(3000)
+                await page.waitForTimeout(20000)
                 await page.click('#VideoPanel > div:nth-child(3) > div > div > span')
                 await page.waitForTimeout(2000)
                 await page.type('.tipAmountInput', '1')
                 await page.waitForTimeout(2000)
                 await page.type('.tipMessageInput', 'hola')
                 await page.waitForTimeout(2000)
-                // await page.click('#SplitModeTipCallout > form > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)')
+                const button = (await page.$x("//*[@id='SplitModeTipCallout']/form/div[3]/div[2]/button[1]"))[0]
+                await button.click()
                 await page.waitForTimeout(2000)
 
             } catch (error) {
@@ -201,16 +202,16 @@ async function open_tabTres( url , browser, urlModel, id){
         });
         if (hasClass === true) {
             console.log('Ya la sigue');
-                await page.waitForTimeout(3000)
-                await page.waitForTimeout(3000)
-                await page.click('#VideoPanel > div:nth-child(3) > div > div > span')
-                await page.waitForTimeout(2000)
-                await page.type('.tipAmountInput', '1')
-                await page.waitForTimeout(2000)
-                await page.type('.tipMessageInput', 'hola')
-                await page.waitForTimeout(2000)
-                // await page.click('#SplitModeTipCallout > form > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)')
-                await page.waitForTimeout(2000)
+            await page.waitForTimeout(20000)
+            await page.click('#VideoPanel > div:nth-child(3) > div > div > span')
+            await page.waitForTimeout(2000)
+            await page.type('.tipAmountInput', '1')
+            await page.waitForTimeout(2000)
+            await page.type('.tipMessageInput', 'hola')
+            await page.waitForTimeout(2000)
+            const button = (await page.$x("//*[@id='SplitModeTipCallout']/form/div[3]/div[2]/button[1]"))[0]
+            await button.click()
+            await page.waitForTimeout(2000)
             return;
         }else{
             const followButtonSig = await page.$('.followButton')
@@ -223,15 +224,15 @@ async function open_tabTres( url , browser, urlModel, id){
             await page.evaluate(() => {
                 window.scrollTo(0, 0);
             });
-            // await page.waitForTimeout(5000)
-            await page.waitForTimeout(3000)
+            await page.waitForTimeout(20000)
             await page.click('#VideoPanel > div:nth-child(3) > div > div > span')
             await page.waitForTimeout(2000)
             await page.type('.tipAmountInput', '1')
             await page.waitForTimeout(2000)
             await page.type('.tipMessageInput', 'hola')
             await page.waitForTimeout(2000)
-            // await page.click('#SplitModeTipCallout > form > div:nth-child(3) > div:nth-child(2) > button:nth-child(1)')
+            const button = (await page.$x("//*[@id='SplitModeTipCallout']/form/div[3]/div[2]/button[1]"))[0]
+            await button.click()
             await page.waitForTimeout(2000)
         }
     } catch (error) {
