@@ -172,17 +172,16 @@ const killBot = async (req, res) => {
     console.log('Fin');
   }
 
-  main().then(() => {
-    return res.status(200).send({
-      success: true,
-      message: 'bot killer'
-    });
-  })
+  main()
   .catch((err) => {
     return res.status(400).send({
       success: false,
       message: err.message
     });
+  });
+  return res.status(200).send({
+    success: true,
+    message: 'bot killer'
   });
 
 };
@@ -309,17 +308,16 @@ const killBotAny = async (req, res) => {
     console.log('Fin');
   }
   
-  main().then(() => {
-    return res.status(200).send({
-      success: true,
-      message: 'bot killer'
-    });
-  })
+  main()
   .catch((err) => {
     return res.status(400).send({
       success: false,
       message: err.message
     });
+  });
+  return res.status(200).send({
+    success: true,
+    message: 'bot killer'
   });
 };
 
@@ -706,17 +704,16 @@ const killBotFollowers = async (req, res) => {
     console.log('Fin');
   }
 
-  main().then(() => {
-    return res.status(200).send({
-      success: true,
-      message: 'bot killer'
-    });
-  })
+  main()
   .catch((err) => {
     return res.status(400).send({
       success: false,
       message: err.message
     });
+  });
+  return res.status(200).send({
+    success: true,
+    message: 'bot killer'
   });
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -868,17 +865,16 @@ const killBotColor = async (req, res) => {
     console.log('Fin');
   }
 
-  main().then(() => {
-    return res.status(200).send({
-      success: true,
-      message: 'bot killer'
-    });
-  })
+  main()
   .catch((err) => {
     return res.status(400).send({
       success: false,
       message: err.message
     });
+  });
+  return res.status(200).send({
+    success: true,
+    message: 'bot killer'
   });
 }
 
