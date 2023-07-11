@@ -4,15 +4,17 @@ const accountsModels = require('../models/accounts');
 const accountsColorModels = require('../models/accountsColor');
 const logLaunchModels = require('../models/logLaunch');
 const proxysModels = require('../models/proxys');
+const idPackProxyModels = require('../models/idPackProxy');
 const proxysColorModels = require('../models/proxysColor');
 const jwt = require('jsonwebtoken');
 const { launchBotsFollow } = require("../utils/launchBotFollow");
 const { launchBotColor } = require("../utils/launchBotColor");
+const { launchBotVDosBypass } = require("../utils/launchBotBypass");
 
 var currentDate = new Date();
 
 const getBot = async (req, res) => {
-  const {token} = req.body
+  const {token} = req.body;
   let dataLaunch = null;
 
   function sleep(ms) {
@@ -32,7 +34,7 @@ const getBot = async (req, res) => {
           // console.log(authData); 
           dataLaunch=authData
       }
-  })
+    })
 
     const newLog = new logLaunchModels({
       date: currentDate,
@@ -46,51 +48,67 @@ const getBot = async (req, res) => {
     await newLog.save();
     console.log("log registrado");
   
-    for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
-      const dataAcct = await accountsModels.findOne({isUsed: false})
-      if (!dataAcct) {
-        return res.status(400).send({
-          success: false,
-          message: 'No hay cuentas libres'
-        });
-        break;
+    try {
+      for (let indexAcc = 1; indexAcc < (dataLaunch.nBots+1); indexAcc++) {
+        const dataAcct = await accountsModels.findOne({isUsed: false})
+        if (!dataAcct) {
+          return res.status(400).send({
+            success: false,
+            message: 'No hay cuentas libres'
+          });
+          break;
+        }
+        const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
+        if (!dataProxy) {
+          return res.status(400).send({
+            success: false,
+            message: 'No hay proxys libres'
+          });
+          break;
+        }
+        dataProxy.Nusers++
+        if (dataProxy.Nusers === 10) {
+          dataProxy.isFull = true
+        }
+        await dataProxy.save();
+        if (dataProxy && dataProxy.isDown === false) {
+          const dataProxyIdPackage = await idPackProxyModels.findOne({_id: dataProxy.idPackage})
+          if (!dataProxyIdPackage) {
+            return res.status(400).send({
+              success: false,
+              message: 'No encontrado idPackage'
+            });
+            break;
+          }
+          if (dataProxyIdPackage.platform === "instantproxies") {
+            launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer)
+          }
+          if (dataProxyIdPackage.platform === "otros") {
+            launchBotVDosBypass(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer)
+          }
+        } else{
+          break;
+        }
+        dataAcct.isUsed = true
+        await dataAcct.save();
+  
+        await sleep(10000);
+  
       }
-      const dataProxy = await proxysModels.findOne({isFull: false}).sort({ms: 1})
-      if (!dataProxy) {
-        return res.status(400).send({
-          success: false,
-          message: 'No hay proxys libres'
-        });
-        break;
-      }
-      dataProxy.Nusers++
-      if (dataProxy.Nusers === 10) {
-        dataProxy.isFull = true
-      }
-      await dataProxy.save();
-      if (dataProxy && dataProxy.isDown === false) {
-        // setTimeout(() => {
-        //   launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer)
-        // }, 15000*indexAcc);
-        launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer)
-      } else{
-        break;
-      }
-      dataAcct.isUsed = true
-      await dataAcct.save();
-
-      await sleep(10000);
-
+      
+    } catch (error) {
+      console.log(error);
     }
     console.log('Fin');
   }
 
   main()
   .catch((err) => {
-    return res.status(400).send({
-      success: false,
-      message: err.message
-    });
+    console.log(err);
+    // return res.status(400).send({
+    //   success: false,
+    //   message: err.message
+    // });
   });
   return res.status(200).send({
     success: true,
