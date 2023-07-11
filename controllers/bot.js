@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken');
 const { launchBotsFollow } = require("../utils/launchBotFollow");
 const { launchBotColor } = require("../utils/launchBotColor");
 const { launchBotVDosBypass } = require("../utils/launchBotBypass");
+const { launchBotsFollowBypass } = require("../utils/launchBotFollowBypass");
+const { launchBotColorBypass } = require("../utils/launchBotColorBypass");
 
 var currentDate = new Date();
 
@@ -631,9 +633,24 @@ const BotFollowers = async (req, res) => {
     }
     await dataProxy.save();
     if (dataProxy && dataProxy.isDown === false) {
-      setTimeout(() => {
-        launchBotsFollow(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
-      }, 15000*indexAcc);
+      const dataProxyIdPackage = await idPackProxyModels.findOne({_id: dataProxy.idPackage})
+      if (!dataProxyIdPackage) {
+        return res.status(400).send({
+          success: false,
+          message: 'No encontrado idPackage'
+        });
+        break;
+      }
+      if (dataProxyIdPackage.platform === "instantproxies") {
+        setTimeout(() => {
+          launchBotsFollow(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
+        }, 15000*indexAcc);
+      }
+      if (dataProxyIdPackage.platform === "otros") {
+        setTimeout(() => {
+          launchBotsFollowBypass(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
+        }, 15000*indexAcc);
+      }
     } else{
       break;
     }
@@ -793,9 +810,25 @@ const BotColor = async (req, res) => {
       });
     }
     if (dataProxy && dataProxy.isDown === false) {
-      setTimeout(() => {
-        launchBotColor(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
-      }, 15000*indexAcc);
+      const dataProxyIdPackage = await idPackProxyModels.findOne({_id: dataProxy.idPackage})
+      if (!dataProxyIdPackage) {
+        return res.status(400).send({
+          success: false,
+          message: 'No encontrado idPackage'
+        });
+        break;
+      }
+      if (dataProxyIdPackage.platform === "instantproxies") {
+        setTimeout(() => {
+          launchBotColor(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
+        }, 15000*indexAcc);
+      }
+      if (dataProxyIdPackage.platform === "otros") {
+        setTimeout(() => {
+          launchBotColorBypass(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
+        }, 15000*indexAcc);
+      }
+
     } else{
       break;
     }
