@@ -68,6 +68,7 @@ const launchBotColor = async (proxy, id, name_model, username, password, index, 
             args: [
                 `--proxy-server=${proxy}`,
                 "--start-maximized",
+                "--new-window",
                 "--disable-webgl",
                 "--disable-plugins",
                 "--disable-web-security",
@@ -196,6 +197,8 @@ const launchBotColor = async (proxy, id, name_model, username, password, index, 
 
           const x = 50; 
           const y = 290; 
+
+          await currentPage.focus();
 
           console.log("clicking web")
           await currentPage.waitForTimeout(5000);

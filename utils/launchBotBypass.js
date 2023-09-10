@@ -77,6 +77,7 @@ const launchBotVDosBypass = async (proxy, id, name_model, username, password, in
             args: [
                 `--proxy-server=${proxy}`,
                 "--start-maximized",
+                "--new-window",
                 "--disable-webgl",
                 "--disable-plugins",
                 "--disable-web-security",
@@ -205,6 +206,8 @@ const launchBotVDosBypass = async (proxy, id, name_model, username, password, in
 
           const x = 50; 
           const y = 290; 
+
+          await currentPage.focus();
 
           console.log("clicking web")
           await currentPage.waitForTimeout(5000);

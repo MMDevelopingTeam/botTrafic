@@ -67,6 +67,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
             args: [
                 `--proxy-server=${proxy}`,
                 "--start-maximized",
+                "--new-window",
                 "--disable-webgl",
                 "--disable-plugins",
                 "--disable-web-security",
@@ -195,6 +196,8 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
 
           const x = 50; 
           const y = 290; 
+
+          await currentPage.focus();
 
           console.log("clicking web")
           await currentPage.waitForTimeout(5000);
