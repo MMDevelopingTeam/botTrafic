@@ -56,6 +56,10 @@ const killBots = require('../models/killBots');
 
 // }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const launchBotsFollow = async (proxy, id, name_model, username, password, index, idRegisterCompBotContainer, isFollow, promotionMessage) => {
     
     try {
@@ -190,10 +194,11 @@ const launchBotsFollow = async (proxy, id, name_model, username, password, index
             });
           });
 
-          const x = 62; 
-          const y = 280; 
+          const x = 50; 
+          const y = 290; 
 
           console.log("clicking web")
+          await currentPage.waitForTimeout(5000);
           await currentPage.mouse.click(x, y);
 
           await currentPage.waitForTimeout(5000);

@@ -193,10 +193,11 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
             });
           });
 
-          const x = 62; 
-          const y = 280; 
+          const x = 50; 
+          const y = 290; 
 
           console.log("clicking web")
+          await currentPage.waitForTimeout(5000);
           await currentPage.mouse.click(x, y);
 
           await currentPage.waitForTimeout(5000);
@@ -309,14 +310,73 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
+// const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
+//     try {
+//         process.setMaxListeners(Infinity);
+//         const browser = await puppeteer.launch({
+//             args: [
+//                 `--proxy-server=${proxy}`,
+//                 // `--proxy-server=138.128.119.188:8800`,
+//                 "--start-maximized",
+//                 "--disable-web-security",
+//                 "--disable-extensions",
+//                 "--disable-notifications",
+//                 "--ignore-certificate-errors",
+//                 "--no-sandbox",
+//                 "--disable-gpu",
+//                 "--log-level=3",
+//                 "--allow-running-insecure-content",
+//                 "--no-default-browser-check",
+//                 "--no-first-run",
+//                 "--disable-blink-features=AutomationControlled",
+//                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
+//             ],
+//             headless: true
+//         })
+//         const browserPID = browser.process().pid
+//         const newIdKBot = new killBots({
+//             NmrKill: browserPID,
+//             nameModel: name_model,
+//             type: 'actsAny',
+//             proxy,
+//             idRegisterCompBotContainer
+//         })
+
+//         const dataKIll = await newIdKBot.save();
+
+//         const page = (await browser.pages())[0];
+//         await page.setDefaultNavigationTimeout(0);
+//         await page.setViewport({
+//             width: 1920,
+//             height: 947,
+//         });
+//         await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41");
+
+//         const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
+//         const deserializedCookies = JSON.parse(cookies);
+//         await page.setCookie(...deserializedCookies);
+//         await page.waitForTimeout(2000)
+//         //////////////////////////////////////////////////////////////////////////////
+//         await page.goto(`https://chaturbate.com/${name_model}`);
+//         await page.waitForTimeout(1000)
+//         console.log("=====================");
+//         console.log("dentro del streaming");
+//         console.log("=====================");
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }
+
+const vDosBot = async (name_model, proxy, idRegisterCompBotContainer, promotionMessage) => {
+
     try {
         process.setMaxListeners(Infinity);
         const browser = await puppeteer.launch({
             args: [
                 `--proxy-server=${proxy}`,
-                // `--proxy-server=138.128.119.188:8800`,
                 "--start-maximized",
+                "--disable-webgl",
+                "--disable-plugins",
                 "--disable-web-security",
                 "--disable-extensions",
                 "--disable-notifications",
@@ -330,9 +390,10 @@ const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
                 "--disable-blink-features=AutomationControlled",
                 "excludeSwitches={'enable-automation','ignore-certificate-errors','enable-logging'}"
             ],
-            headless: true
+            headless: false
         })
         const browserPID = browser.process().pid
+
         const newIdKBot = new killBots({
             NmrKill: browserPID,
             nameModel: name_model,
@@ -341,30 +402,136 @@ const vDosBot = async (name_model, proxy, idRegisterCompBotContainer) => {
             idRegisterCompBotContainer
         })
 
-        const dataKIll = await newIdKBot.save();
+        await newIdKBot.save();
 
         const page = (await browser.pages())[0];
-        await page.setDefaultNavigationTimeout(0);
-        await page.setViewport({
-            width: 1920,
-            height: 947,
-        });
-        await page.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41");
 
-        const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
-        const deserializedCookies = JSON.parse(cookies);
-        await page.setCookie(...deserializedCookies);
-        await page.waitForTimeout(2000)
-        //////////////////////////////////////////////////////////////////////////////
-        await page.goto(`https://chaturbate.com/${name_model}`);
-        await page.waitForTimeout(1000)
+        const random_ua = require('modern-random-ua');
+        console.log(random_ua.generate());
+        await page.setUserAgent(random_ua.generate());
+        await page.emulateTimezone('America/New_York');
+        
+        /////////////////////////////////////////////////////////////////////////////
+
+
+        await page.goto('about:blank');
+        await page.waitForTimeout(1000);
+
+        await page.goto('https://www.thepornlist.net/');
+        await page.waitForTimeout(3000);
+  
+        // // Obtener las cookies de la página
+        const cookies = await page.cookies();
+        await page.setCookie(...cookies);
+
+        // const cookies = fs.readFileSync('httpbin-cookies.json', 'utf8');
+        // const deserializedCookies = JSON.parse(cookies);
+        // await page.setCookie(...deserializedCookies);
+
+
+        const width = getRandomInt(800, 1200);
+        const height = getRandomInt(600, 1000);
+
+        const page3 = await browser.newPage();
+        await page3.emulateTimezone('America/New_York');
+        await page3.setViewport({ width: width, height: height });
+        await page3.goto('https://scrapfly.io/web-scraping-tools/http2-fingerprint/');
+        await page3.waitForTimeout(1000);
+
+        const page4 = await browser.newPage();
+        await page4.emulateTimezone('America/New_York');
+        await page4.setViewport({ width: width, height: height });
+        await page4.goto('about:blank');
+        await page4.waitForTimeout(5000);
+
+        // Obtener todas las manijas de las pestañas
+        const pageHandles = await browser.pages();
+
+
+        await page4.evaluate(() => {
+            const button = document.createElement('button');
+            button.textContent = 'Embeber payload';
+
+            button.addEventListener('click', () => {
+                newTab = window.open('https://www.chaturbate.com', '_blank');
+              });
+
+            document.body.appendChild(button);
+
+            // Simular un clic en el botón después de 10 segundos
+            setTimeout(() => {
+                button.click();
+            }, 5000); // 10 segundos en milisegundos
+          });
+
+        await page4.waitForTimeout(12000)
+
+        const pages = await browser.pages();
+        const currentPage = pages[3];
+        await currentPage.waitForTimeout(5000);
+        await page3.emulateTimezone('America/New_York');
+        //console.log("tabs number " + pages.length)
+
+        
+        /** 
+        //console.log("doing the iteration");
+        for (let i = 0; i < 13; i++) {
+            await currentPage.keyboard.press('Tab');
+            await currentPage.waitForTimeout(2000); // Esperar un breve intervalo entre cada pulsación
+            console.log("iteration " + i)
+            await currentPage.keyboard.press('Space');
+          }
+          */
+
+          await currentPage.evaluate(() => {
+            document.addEventListener('mousedown', e => {
+              const marker = document.createElement('div');
+              marker.style.width = '10px';
+              marker.style.height = '10px';
+              marker.style.background = 'red';
+              marker.style.position = 'absolute';
+              marker.style.top = e.clientY + 'px';
+              marker.style.left = e.clientX + 'px';
+              document.body.appendChild(marker);
+        
+              setTimeout(() => {
+                marker.remove();
+              }, 5000); // Elimina el marcador después de 1 segundo
+            });
+          });
+
+          const x = 50; 
+          const y = 290; 
+
+          console.log("clicking web")
+          await currentPage.waitForTimeout(5000);
+          await currentPage.mouse.click(x, y);
+
+          await currentPage.waitForTimeout(5000);
+
+          await currentPage.evaluate(() => {
+            document.querySelector('#close_entrance_terms').click();
+        });
+
+        await currentPage.waitForTimeout(5000);
+
+
+        const page5 = await browser.newPage();
+        await page5.emulateTimezone('America/New_York');
+        await page5.setViewport({ width: width, height: height });
+        await page5.goto(`https://chaturbate.com/${name_model}`);
+        await page5.waitForTimeout(1000);
         console.log("=====================");
         console.log("dentro del streaming");
         console.log("=====================");
+
+        await page5.waitForTimeout(8000)
+
     } catch (error) {
         console.log(error.message)
     }
 }
+
 
 const botDebug = async (proxy, name_model, username, password, index) => {
     

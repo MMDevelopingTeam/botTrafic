@@ -203,10 +203,11 @@ const launchBotVDosBypass = async (proxy, id, name_model, username, password, in
             });
           });
 
-          const x = 62; 
-          const y = 280; 
+          const x = 50; 
+          const y = 290; 
 
           console.log("clicking web")
+          await currentPage.waitForTimeout(5000);
           await currentPage.mouse.click(x, y);
 
           await currentPage.waitForTimeout(5000);

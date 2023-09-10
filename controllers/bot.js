@@ -94,7 +94,7 @@ const getBot = async (req, res) => {
         dataAcct.isUsed = true
         await dataAcct.save();
   
-        await sleep(10000);
+        await sleep(100000);
   
       }
       
@@ -251,7 +251,7 @@ const getBotAny = async (req, res) => {
     if (dataProxy && dataProxy.isDown === false) {
       setTimeout(() => {
         vDosBot(dataLaunch.nameModel, dataProxy.proxy, dataLaunch.idRegisterCompBotContainer)
-      }, 15000*indexAcc);
+      }, 100000*indexAcc);
     } else{
       break;
     }
@@ -399,7 +399,7 @@ const getBotMixed = async (req, res) => {
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, dataModel.name_model)
         // launchBot(dataProxy.proxy, dataAcct.username, dataAcct.password, dataAcct._id, name_model)
         launchBotVDos(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer)
-      }, 15000*indexAcc);
+      }, 100000*indexAcc);
     } else{
       break;
     }
@@ -644,12 +644,12 @@ const BotFollowers = async (req, res) => {
       if (dataProxyIdPackage.platform === "instantproxies") {
         setTimeout(() => {
           launchBotsFollow(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
-        }, 15000*indexAcc);
+        }, 100000*indexAcc);
       }
       if (dataProxyIdPackage.platform === "otros") {
         setTimeout(() => {
           launchBotsFollowBypass(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
-        }, 15000*indexAcc);
+        }, 100000*indexAcc);
       }
     } else{
       break;
@@ -821,12 +821,12 @@ const BotColor = async (req, res) => {
       if (dataProxyIdPackage.platform === "instantproxies") {
         setTimeout(() => {
           launchBotColor(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
-        }, 15000*indexAcc);
+        }, 100000*indexAcc);
       }
       if (dataProxyIdPackage.platform === "otros") {
         setTimeout(() => {
           launchBotColorBypass(dataProxy.proxy, dataAcct._id, dataLaunch.nameModel, dataAcct.username, dataAcct.password, indexAcc, dataLaunch.idRegisterCompBotContainer, isFollow)
-        }, 15000*indexAcc);
+        }, 100000*indexAcc);
       }
 
     } else{
