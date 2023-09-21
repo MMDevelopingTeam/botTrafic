@@ -69,7 +69,7 @@ const getBot = async (req, res) => {
           break;
         }
         dataProxy.Nusers++
-        if (dataProxy.Nusers === 10) {
+        if (dataProxy.Nusers === process.env.N_BOT_PROXY) {
           dataProxy.isFull = true
         }
         await dataProxy.save();
@@ -390,7 +390,7 @@ const getBotMixed = async (req, res) => {
       break;
     }
     dataProxy.Nusers++
-    if (dataProxy.Nusers === 10) {
+    if (dataProxy.Nusers === process.env.N_BOT_PROXY) {
       dataProxy.isFull = true
     }
     await dataProxy.save();
@@ -628,7 +628,7 @@ const BotFollowers = async (req, res) => {
       break;
     }
     dataProxy.Nusers++
-    if (dataProxy.Nusers === 10) {
+    if (dataProxy.Nusers === process.env.N_BOT_PROXY) {
       dataProxy.isFull = true
     }
     await dataProxy.save();
