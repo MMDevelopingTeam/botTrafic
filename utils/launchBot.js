@@ -197,7 +197,7 @@ const launchBotVDos = async (proxy, id, name_model, username, password, index, i
           const x = 50; 
           const y = 290; 
 
-          await currentPage.focus();
+          //  await currentPage.focus();
 
           console.log("clicking web")
           await currentPage.waitForTimeout(5000);

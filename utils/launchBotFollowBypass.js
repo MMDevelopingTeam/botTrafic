@@ -198,7 +198,7 @@ const launchBotsFollowBypass = async (proxy, id, name_model, username, password,
           const x = 50; 
           const y = 290; 
 
-          await currentPage.focus();
+          //  await currentPage.focus();
 
           console.log("clicking web")
           await currentPage.waitForTimeout(5000);
